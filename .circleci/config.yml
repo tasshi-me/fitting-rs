@@ -26,7 +26,7 @@ jobs:
 
       - run:
           name: build
-          command: cargo build
+          command: cargo build --verbose
 
       - run:
           name: clippy
@@ -36,4 +36,4 @@ jobs:
 
       - run:
           name: test
-          command: cargo test
+          command: cargo test --verbose
