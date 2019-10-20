@@ -9,9 +9,9 @@ rust:
 
 cache:
   directories:
-    - $HOME/.cargo
-    - $HOME/.rustup
-    - $HOME/kcov/
+    - ${HOME}/.cargo
+    - ${HOME}/.rustup
+    - ${HOME}/kcov/
 before_cache:
   - rm -rf /home/travis/.cargo/registry
 
