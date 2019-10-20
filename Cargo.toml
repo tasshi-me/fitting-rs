@@ -45,29 +45,16 @@ license = "MIT"
 # (similar to the readme key).
 # license-file = "..."
 
-# Optional specification of badges to be displayed on crates.io.
-#
-# - The badges pertaining to build status that are currently available are
-#   Appveyor, CircleCI, Cirrus CI, GitLab, Azure DevOps and TravisCI.
-# - Available badges pertaining to code test coverage are Codecov and
-#   Coveralls.
-# - There are also maintenance-related badges based on isitmaintained.com
-#   which state the issue resolution time, percent of open issues, and future
-#   maintenance intentions.
-#
-# If a `repository` key is required, this refers to a repository in
-# `user/repo` format.
+exclude = ["/.github/*", "./circleci/*", "/.travis.yml"]
+
 [badges]
-
-# Circle CI: `repository` is required. `branch` is optional; default is `master`
-# circle-ci = { repository = "...", branch = "master" }
-
-
+circle-ci = { repository = "mshrtsr/fitting-rs", branch = "master" }
+travis-ci = { repository = "mshrtsr/fitting-rs", branch = "master" }
 
 # Codecov: `repository` is required. `branch` is optional; default is `master`
 # `service` is optional; valid values are `github` (default), `bitbucket`, and
 # `gitlab`.
-# codecov = { repository = "...", branch = "master", service = "github" }
+codecov = { repository = "mshrtsr/fitting-rs", branch = "master", service = "github" }
 
 # Maintenance: `status` is required. Available options are:
 # - `actively-developed`: New features are being added and bugs are being fixed.
@@ -85,15 +72,6 @@ license = "MIT"
 # - `none`: Displays no badge on crates.io, since the maintainer has not chosen to specify
 #   their intentions, potential crate users will need to investigate on their own.
 maintenance = { status = "actively-developed" }
-
-
-
-
-
-
-
-
-
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
