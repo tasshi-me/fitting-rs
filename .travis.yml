@@ -7,3 +7,9 @@ jobs:
   allow_failures:
     - rust: nightly
   fast_finish: true
+
+before_script: |
+  cargo fmt --version
+  cargo fmt -- --check
+  cargo clippy --version
+  cargo clippy
