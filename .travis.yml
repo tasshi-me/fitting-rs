@@ -11,13 +11,32 @@ cache:
   directories:
     - $HOME/.cargo
     - $HOME/.rustup
+    - $HOME/kcov/
 before_cache:
   - rm -rf /home/travis/.cargo/registry
+
+env:
+  - PATH=$PATH:${HOME}/kcov/bin
 
 jobs:
   allow_failures:
     - rust: nightly
   fast_finish: true
+
+before_install: |
+  if [ ! -d "${HOME}/kcov/bin" ];
+  then 
+  wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz &&
+  tar xzf master.tar.gz &&
+  cd kcov-master &&
+  mkdir build &&
+  cd build &&
+  cmake -DCMAKE_INSTALL_PREFIX=${HOME}/kcov .. &&
+  make &&
+  make install &&
+  cd ../.. &&
+  rm -rf kcov-master;
+  fi
 
 before_script: |
   cargo fmt --version
@@ -37,16 +56,11 @@ addons:
       - libiberty-dev
 
 after_success: |
-  wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz &&
-  tar xzf master.tar.gz &&
-  cd kcov-master &&
-  mkdir build &&
-  cd build &&
-  cmake .. &&
-  make &&
-  make install DESTDIR=../../kcov-build &&
-  cd ../.. &&
-  rm -rf kcov-master &&
-  for file in target/debug/fitting-*; do [ -x "${file}" ] || continue; mkdir -p "target/cov/$(basename $file)"; ./kcov-build/usr/local/bin/kcov --exclude-pattern=/.cargo,/usr/lib --verify "target/cov/$(basename $file)" "$file"; done &&
+  for file in target/debug/fitting-*;
+  do 
+  [ -x "${file}" ] || continue;
+  mkdir -p "target/cov/$(basename ${file})";
+  kcov --exclude-pattern=/.cargo,/usr/lib --verify "target/cov/$(basename ${file})" "${file}"; 
+  done &&
   bash <(curl -s https://codecov.io/bash) &&
   echo "Uploaded code coverage"
