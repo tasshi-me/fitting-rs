@@ -26,6 +26,7 @@ jobs:
 before_install: |
   if [ ! -d "${HOME}/kcov/bin" ];
   then 
+  echo "Install kcov" &&
   wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz &&
   tar xzf master.tar.gz &&
   cd kcov-master &&
@@ -37,12 +38,14 @@ before_install: |
   cd ../.. &&
   rm -rf kcov-master;
   fi
+  cargo install cargo-kcov
 
 before_script: |
   cargo fmt --version
   cargo fmt -- --check
   cargo clippy --version
   cargo clippy
+  cargo clean
 
 addons:
   apt:
@@ -56,11 +59,8 @@ addons:
       - libiberty-dev
 
 after_success: |
-  for file in target/debug/fitting-*;
-  do 
-  [ -x "${file}" ] || continue;
-  mkdir -p "target/cov/$(basename ${file})";
-  kcov --exclude-pattern=/.cargo,/usr/lib --verify "target/cov/$(basename ${file})" "${file}"; 
-  done &&
+  cargo kcov --no-clean-rebuild --verbose --all --no-fail-fast \
+  --output ./target/cov -- --verify --include-path=. --exclude-path=./target \
+  --exclude-region=kcov-ignore-begin:kcov-ignore-end --exclude-line=kcov-ignore-line &&
   bash <(curl -s https://codecov.io/bash) &&
   echo "Uploaded code coverage"
