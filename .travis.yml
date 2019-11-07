@@ -38,7 +38,20 @@ before_install: |
   cd ../.. &&
   rm -rf kcov-master;
   fi
-  cargo install cargo-kcov
+  if ! type cargo-kcov > /dev/null;
+  then
+  echo "Install cargo-kcov" &&
+  cargo install cargo-kcov -f;
+  else
+  echo "Check cargo-kcov is latest"
+  REMOTE_KCOV_VERSION=`cargo search cargo-kcov --limit 1 | sed -e 's/^cargo-kcov = "\(.*\)".*/\1/'`
+  LOCAL_KCOV_VERSION=`cargo-kcov --version | sed -e 's/^cargo-kcov \(.*\).*/\1/'`
+  if [ ! $REMOTE_KCOV_VERSION = $LOCAL_KCOV_VERSION ];
+  then
+  echo "Upgrade cargo-kcov" &&
+  cargo install cargo-kcov -f;
+  fi
+  fi
 
 before_script: |
   cargo fmt --version
