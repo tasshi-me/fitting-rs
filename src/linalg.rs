@@ -1,8 +1,8 @@
-/// Solve a system of linear equations.
+/// Solves a system of linear equations.
 ///
 /// This function implements the Gaussian elimination.
 /// # Examples
-/// Solve `a * x = b`
+/// Solves `a * x = b`.
 ///
 /// ```
 /// let a = vec![vec![3., 1.], vec![1., 2.]];
