@@ -76,17 +76,6 @@ pub fn val(x: f64, mu: f64, sigma: f64, a: f64) -> f64 {
 }
 
 fn caruanas(x_vec: Array1<f64>, y_vec: Array1<f64>) -> (f64, f64, f64) {
-    // let x_vec: Vec<f64> = x_vec
-    //     .iter()
-    //     .zip(y_vec.iter())
-    //     .filter_map(|(x, y)| if *y > 0. { Some(*x) } else { None })
-    //     .collect();
-    // let y_vec: Vec<f64> = y_vec
-    //     .iter()
-    //     .filter_map(|y| if *y > 0. { Some(*y) } else { None })
-    //     .collect();
-    // println!("x: {:?}", x_vec);
-    // println!("y: {:?}", y_vec);
     let len_x_vec = x_vec.len() as f64;
     let sum_x = x_vec.iter().sum();
     let sum_x_pow2 = x_vec.iter().map(|x| x.powi(2)).sum();
@@ -98,13 +87,7 @@ fn caruanas(x_vec: Array1<f64>, y_vec: Array1<f64>) -> (f64, f64, f64) {
         [sum_x_pow2, sum_x_pow3, sum_x_pow4],
     ];
 
-    let sum_log_y = y_vec
-        .iter()
-        .map(|y| {
-            // println!("{}", y.ln());
-            y.ln()
-        })
-        .sum();
+    let sum_log_y = y_vec.iter().map(|y| y.ln()).sum();
     let sum_x_log_y = y_vec
         .iter()
         .zip(x_vec.iter())
@@ -116,31 +99,18 @@ fn caruanas(x_vec: Array1<f64>, y_vec: Array1<f64>) -> (f64, f64, f64) {
         .map(|(y, x)| y.ln() * x.powi(2))
         .sum();
     let b = array![sum_log_y, sum_x_log_y, sum_x_pow2_log_y];
-    // println!("a: {:?}", a);
-    // println!("b: {:?}", b);
+
     let ans_x = solve(a, b).unwrap();
     let (a, b, c) = (ans_x[0], ans_x[1], ans_x[2]);
-    // println!("a: {}, b: {}, c: {}", a, b, c);
 
     let mu = -b / (2. * c);
     let sigma = (-1. / (2. * c)).sqrt();
     let a = (a - (b.powi(2) / (4. * c))).exp();
 
-    return (mu, sigma, a);
+    (mu, sigma, a)
 }
 
 fn guos(x_vec: Array1<f64>, y_vec: Array1<f64>) -> (f64, f64, f64) {
-    // let x_vec: Vec<f64> = x_vec
-    //     .iter()
-    //     .zip(y_vec.iter())
-    //     .filter_map(|(x, y)| if *y > 0. { Some(*x) } else { None })
-    //     .collect();
-    // let y_vec: Vec<f64> = y_vec
-    //     .iter()
-    //     .filter_map(|y| if *y > 0. { Some(*y) } else { None })
-    //     .collect();
-    // println!("x: {:?}", x_vec);
-    // println!("y: {:?}", y_vec);
     let sum_y_pow2 = y_vec.iter().map(|y| y.powi(2)).sum();
     let sum_x_y_pow2 = y_vec
         .iter()
@@ -185,17 +155,15 @@ fn guos(x_vec: Array1<f64>, y_vec: Array1<f64>) -> (f64, f64, f64) {
         sum_x_y_pow2_log_y,
         sum_x_pow2_y_pow2_log_y,
     ];
-    // println!("a: {:?}", a);
-    // println!("b: {:?}", b);
+
     let ans_x = solve(a, b).unwrap();
     let (a, b, c) = (ans_x[0], ans_x[1], ans_x[2]);
-    // println!("a: {}, b: {}, c: {}", a, b, c);
 
     let mu = -b / (2. * c);
     let sigma = (-1. / (2. * c)).sqrt();
     let a = (a - (b.powi(2) / (4. * c))).exp();
 
-    return (mu, sigma, a);
+    (mu, sigma, a)
 }
 
 #[cfg(test)]

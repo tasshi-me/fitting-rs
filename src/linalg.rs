@@ -21,13 +21,12 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Option<Array1<f64>> {
     let mut b = b;
     for i in 0..(a.ncols() - 1) {
         for j in i + 1..a.nrows() {
-            // println!("for: {},{}", i, j);
             let coefficient = a[[j, i]] / a[[i, i]];
             // a[j] -= a[i] * coefficient;
             let a_i = a.row(i).to_owned();
             let mut view = a.row_mut(j);
             view -= &(&a_i * coefficient);
-            b[j] -= &b[i] * coefficient;
+            b[j] -= b[i] * coefficient;
         }
     }
 
@@ -38,12 +37,10 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Option<Array1<f64>> {
         let mut view = a.row_mut(i);
         view /= a_i_i;
         for j in 0..i {
-            // println!("for: {},{}", i, j);
             b[j] -= b[i] * a[[j, i]];
             a[[j, i]] = 0.;
         }
     }
-    // println!("{:?}", b);
     Some(b)
 }
 
