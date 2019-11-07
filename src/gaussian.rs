@@ -178,38 +178,43 @@ fn guos(x_vec: Array1<f64>, y_vec: Array1<f64>) -> (f64, f64, f64) {
     return (mu, sigma, a);
 }
 
-#[test]
-fn gaussian_val() {
-    let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
-    let x = 5.;
-    let y = val(x, mu, sigma, a);
-    assert_eq!(y, a);
-}
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-#[test]
-fn gaussian_vals() {
-    let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
-    let x_vec: Array1<f64> = (1..10).map(|x| x as f64).collect();
-    let y_vec: Array1<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
-    //assert_eq!(y_vec, a);
-}
+    #[test]
+    fn gaussian_val() {
+        let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
+        let x = 5.;
+        let y = val(x, mu, sigma, a);
+        assert_eq!(y, a);
+    }
 
-#[test]
-fn gaussian_fit_caruanas() {
-    let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
-    let x_vec: Array1<f64> = (1..10).map(|x| x as f64).collect();
-    let y_vec: Array1<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
-    let estimated = caruanas(x_vec, y_vec);
-    println!("{:?}, {:?}, {:?}", mu, sigma, a);
-    println!("{:?}", estimated);
-}
+    #[test]
+    fn gaussian_vals() {
+        let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
+        let x_vec: Array1<f64> = (1..10).map(|x| x as f64).collect();
+        let y_vec: Array1<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
+        //assert_eq!(y_vec, a);
+    }
 
-#[test]
-fn gaussian_fit_guos() {
-    let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
-    let x_vec: Array1<f64> = (1..10).map(|x| x as f64).collect();
-    let y_vec: Array1<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
-    let estimated = guos(x_vec, y_vec);
-    println!("{:?}, {:?}, {:?}", mu, sigma, a);
-    println!("{:?}", estimated);
+    #[test]
+    fn gaussian_fit_caruanas() {
+        let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
+        let x_vec: Array1<f64> = (1..10).map(|x| x as f64).collect();
+        let y_vec: Array1<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
+        let estimated = caruanas(x_vec, y_vec);
+        println!("{:?}, {:?}, {:?}", mu, sigma, a);
+        println!("{:?}", estimated);
+    }
+
+    #[test]
+    fn gaussian_fit_guos() {
+        let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
+        let x_vec: Array1<f64> = (1..10).map(|x| x as f64).collect();
+        let y_vec: Array1<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
+        let estimated = guos(x_vec, y_vec);
+        println!("{:?}, {:?}, {:?}", mu, sigma, a);
+        println!("{:?}", estimated);
+    }
 }
