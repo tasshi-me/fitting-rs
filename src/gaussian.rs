@@ -10,7 +10,7 @@ use std::f64;
 /// Estimates the parameters for sample data.
 ///
 /// ```
-/// use fitting::gaussian::fit;
+/// use fitting::gaussian::{fit, val};
 ///
 /// let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
 /// let x_vec: Vec<f64> = (1..10).map(|x| x as f64).collect();
