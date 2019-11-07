@@ -75,6 +75,7 @@ pub fn val(x: f64, mu: f64, sigma: f64, a: f64) -> f64 {
     a * (-(x - mu).powi(2) / (2. * sigma.powi(2))).exp()
 }
 
+#[allow(dead_code)]
 fn caruanas(x_vec: Array1<f64>, y_vec: Array1<f64>) -> (f64, f64, f64) {
     let len_x_vec = x_vec.len() as f64;
     let sum_x = x_vec.iter().sum();
