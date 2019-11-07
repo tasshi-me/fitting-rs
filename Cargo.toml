@@ -11,8 +11,8 @@ description = "Pure Rust curve fitting library"
 # These URLs point to more information about the package. These are
 # intended to be webviews of the relevant data, not necessarily compatible
 # with VCS tools and the like.
-documentation = "..."
-homepage = "..."
+documentation = "https://github.com/mshrtsr/fitting-rs"
+homepage = "https://github.com/mshrtsr/fitting-rs"
 repository = "https://github.com/mshrtsr/fitting-rs"
 
 # This points to a file under the package root (relative to this `Cargo.toml`).
