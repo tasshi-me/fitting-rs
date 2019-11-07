@@ -10,10 +10,12 @@ use std::f64;
 /// Estimates the parameters for sample data.
 ///
 /// ```
+/// use fitting::gaussian::fit;
+///
 /// let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
 /// let x_vec: Vec<f64> = (1..10).map(|x| x as f64).collect();
 /// let y_vec: Vec<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
-/// let estimated = guos(x_vec, y_vec);
+/// let estimated = fit(x_vec, y_vec);
 /// ```
 ///
 /// # References
@@ -28,6 +30,8 @@ pub fn fit(x_vec: Vec<f64>, y_vec: Vec<f64>) -> (f64, f64, f64) {
 /// Returns a value of gaussian function.
 ///
 /// ```
+/// use fitting::gaussian::val;
+///
 /// let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
 /// let x = 5.;
 /// let y = val(x, mu, sigma, a);
@@ -39,6 +43,8 @@ pub fn fit(x_vec: Vec<f64>, y_vec: Vec<f64>) -> (f64, f64, f64) {
 /// Returns the values of gaussian function.
 ///
 /// ```
+/// use fitting::gaussian::val;
+///
 /// let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
 /// let x_vec: Vec<f64> = (1..10).map(|x| x as f64).collect();
 /// let y_vec: Vec<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();

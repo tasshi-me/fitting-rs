@@ -5,6 +5,8 @@
 /// Solves `a * x = b`.
 ///
 /// ```
+/// use fitting::linalg::solve;
+///
 /// let a = vec![vec![3., 1.], vec![1., 2.]];
 /// let b = vec![9., 8.];
 ///
