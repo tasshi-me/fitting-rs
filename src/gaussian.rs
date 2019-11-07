@@ -11,13 +11,19 @@ use std::f64;
 /// Estimates the parameters for sample data.
 ///
 /// ```
+/// use approx::assert_abs_diff_eq;
 /// use fitting::gaussian::{fit, val};
-/// use ndarray::Array1;
+/// use ndarray::{array, Array, Array1};
 ///
 /// let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
-/// let x_vec: Array1<f64> = (1..10).map(|x| x as f64).collect();
+/// let x_vec: Array1<f64> = Array::range(1., 10., 1.);
 /// let y_vec: Array1<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
 /// let estimated = fit(x_vec, y_vec);
+/// assert_abs_diff_eq!(
+///     &array![estimated.0, estimated.1, estimated.2],
+///     &array![mu, sigma, a],
+///     epsilon = 1e-9
+/// );
 /// ```
 ///
 /// # References
@@ -45,11 +51,25 @@ pub fn fit(x_vec: Array1<f64>, y_vec: Array1<f64>) -> (f64, f64, f64) {
 /// Returns the values of gaussian function.
 ///
 /// ```
+/// use approx::assert_abs_diff_eq;
 /// use fitting::gaussian::val;
+/// use ndarray::{array, Array, Array1};
 ///
 /// let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
-/// let x_vec: Vec<f64> = (1..10).map(|x| x as f64).collect();
-/// let y_vec: Vec<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
+/// let x_vec: Array1<f64> = Array::range(1., 10., 1.);
+/// let y_vec: Array1<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
+/// let expected_ans = array![
+///     0.41111229050718745,
+///     0.6065306597126334,
+///     0.8007374029168081,
+///     0.9459594689067654,
+///     1.,
+///     0.9459594689067654,
+///     0.8007374029168081,
+///     0.6065306597126334,
+///     0.41111229050718745
+/// ];
+/// assert_abs_diff_eq!(&y_vec, &expected_ans, epsilon = 1e-9);
 /// ```
 pub fn val(x: f64, mu: f64, sigma: f64, a: f64) -> f64 {
     a * (-(x - mu).powi(2) / (2. * sigma.powi(2))).exp()
@@ -181,6 +201,8 @@ fn guos(x_vec: Array1<f64>, y_vec: Array1<f64>) -> (f64, f64, f64) {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use approx::assert_abs_diff_eq;
+    use ndarray::{array, Array};
 
     #[test]
     fn gaussian_val() {
@@ -193,28 +215,45 @@ mod tests {
     #[test]
     fn gaussian_vals() {
         let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
-        let x_vec: Array1<f64> = (1..10).map(|x| x as f64).collect();
+        let x_vec: Array1<f64> = Array::range(1., 10., 1.);
         let y_vec: Array1<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
-        //assert_eq!(y_vec, a);
+        let expected_ans = array![
+            0.41111229050718745,
+            0.6065306597126334,
+            0.8007374029168081,
+            0.9459594689067654,
+            1.,
+            0.9459594689067654,
+            0.8007374029168081,
+            0.6065306597126334,
+            0.41111229050718745
+        ];
+        assert_abs_diff_eq!(&y_vec, &expected_ans, epsilon = 1e-9);
     }
 
     #[test]
     fn gaussian_fit_caruanas() {
         let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
-        let x_vec: Array1<f64> = (1..10).map(|x| x as f64).collect();
+        let x_vec: Array1<f64> = Array::range(1., 10., 1.);
         let y_vec: Array1<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
         let estimated = caruanas(x_vec, y_vec);
-        println!("{:?}, {:?}, {:?}", mu, sigma, a);
-        println!("{:?}", estimated);
+        assert_abs_diff_eq!(
+            &array![estimated.0, estimated.1, estimated.2],
+            &array![mu, sigma, a],
+            epsilon = 1e-9
+        );
     }
 
     #[test]
     fn gaussian_fit_guos() {
         let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
-        let x_vec: Array1<f64> = (1..10).map(|x| x as f64).collect();
+        let x_vec: Array1<f64> = Array::range(1., 10., 1.);
         let y_vec: Array1<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
         let estimated = guos(x_vec, y_vec);
-        println!("{:?}, {:?}, {:?}", mu, sigma, a);
-        println!("{:?}", estimated);
+        assert_abs_diff_eq!(
+            &array![estimated.0, estimated.1, estimated.2],
+            &array![mu, sigma, a],
+            epsilon = 1e-9
+        );
     }
 }
