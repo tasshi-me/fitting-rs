@@ -1,3 +1,4 @@
+use crate::error::Error;
 use ndarray::{Array1, Array2};
 
 /// Solves a system of linear equations.
@@ -16,7 +17,7 @@ use ndarray::{Array1, Array2};
 /// let x = solve(a, b).unwrap();
 /// assert_abs_diff_eq!(x, array![1., -2., -2.], epsilon = 1e-9);
 /// ```
-pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Option<Array1<f64>> {
+pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
     let mut a = a;
     let mut b = b;
     for i in 0..(a.ncols() - 1) {
@@ -41,7 +42,7 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Option<Array1<f64>> {
             a[[j, i]] = 0.;
         }
     }
-    Some(b)
+    Ok(b)
 }
 
 #[cfg(test)]
