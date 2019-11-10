@@ -1,4 +1,4 @@
-use crate::error::Error;
+use crate::error::{Error, ErrorKind};
 use approx::{abs_diff_eq, abs_diff_ne};
 use ndarray::{s, Array1, Array2, Axis};
 
@@ -72,6 +72,10 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
     }
     let rank_aug = rank_aug;
 
+    if rank_coef != a.ncols() {
+        return Err(Error::from(ErrorKind::LinalgSolveInfSolutions));
+    }
+
     for i in (0..rank_coef).rev() {
         b[i] /= &a[[i, i]];
         // a[i] /= a[i][i];
@@ -136,5 +140,13 @@ mod tests {
         let b = array![-2., -2., -5., 7.];
         let x = solve(a, b).unwrap();
         assert_abs_diff_eq!(x, array![1., 2., 2.], epsilon = 1e-9);
+    }
+
+    #[test]
+    #[should_panic]
+    fn linalg_solve_has_inf_answers() {
+        let a = array![[2., 1., -3., -2.], [2., -1., -1., 3.], [1., -1., -2., 2.]];
+        let b = array![4., 1., -3.];
+        solve(a, b).unwrap(); //panic
     }
 }
