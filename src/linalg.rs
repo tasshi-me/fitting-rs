@@ -21,6 +21,8 @@ use ndarray::{s, Array1, Array2, Axis};
 pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
     let mut a = a;
     let mut b = b;
+
+    // forward elimination
     for i in 0..(a.nrows() - 1) {
         // partial pivoting
         let (pivot_index, _) = a.column(i).iter().enumerate().skip(i).fold(
@@ -49,7 +51,8 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
             b[j] -= b[i] * coefficient;
         }
     }
-    // Check rank of matrix
+
+    // check rank of matrix
     // rank_coef: rank of coefficient matrix (given a)
     // rank_aug: rank of augmented matrix
     let mut rank_coef = a.nrows();
@@ -74,14 +77,17 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
     }
     let rank_aug = rank_aug;
 
+    // no solutions
     if rank_coef != rank_aug {
         return Err(Error::from(ErrorKind::LinalgSolveNoSolutions));
     }
 
+    // infinite solutions
     if rank_coef != a.ncols() {
         return Err(Error::from(ErrorKind::LinalgSolveInfSolutions));
     }
 
+    // backward substitution
     for i in (0..rank_coef).rev() {
         b[i] /= &a[[i, i]];
         // a[i] /= a[i][i];
