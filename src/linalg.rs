@@ -74,6 +74,10 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
     }
     let rank_aug = rank_aug;
 
+    if rank_coef != rank_aug {
+        return Err(Error::from(ErrorKind::LinalgSolveNoSolutions));
+    }
+
     if rank_coef != a.ncols() {
         return Err(Error::from(ErrorKind::LinalgSolveInfSolutions));
     }
@@ -164,5 +168,13 @@ mod tests {
         let b = array![2., -6. / 5., -1., 1.];
         let err = solve(a, b).unwrap_err(); //panic
         assert!(err.kind() == &ErrorKind::LinalgSolveInfSolutions);
+    }
+
+    #[test]
+    fn linalg_solve_has_no_solutions() {
+        let a = array![[-2., 3.], [4., 1.], [1., -3.],];
+        let b = array![1., 5., -1.];
+        let err = solve(a, b).unwrap_err(); //panic
+        assert!(err.kind() == &ErrorKind::LinalgSolveNoSolutions);
     }
 }

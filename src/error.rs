@@ -11,6 +11,8 @@ pub struct Error {
 pub enum ErrorKind {
     #[fail(display = "None error")]
     Optional,
+    #[fail(display = "Line Algebra error: Equations have no solutions")]
+    LinalgSolveNoSolutions,
     #[fail(display = "Line Algebra error: Equations have infinite solutions")]
     LinalgSolveInfSolutions,
     #[fail(display = "Fitting error")]
