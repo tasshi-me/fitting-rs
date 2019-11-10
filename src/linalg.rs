@@ -20,7 +20,7 @@ use ndarray::{Array1, Array2};
 pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
     let mut a = a;
     let mut b = b;
-    for i in 0..(a.ncols() - 1) {
+    for i in 0..(a.nrows() - 1) {
         for j in i + 1..a.nrows() {
             let coefficient = a[[j, i]] / a[[i, i]];
             // a[j] -= a[i] * coefficient;
