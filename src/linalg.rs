@@ -50,8 +50,29 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
             b[j] -= b[i] * coefficient;
         }
     }
+    // Check rank of matrix
+    // rank_coef: rank of coefficient matrix (given a)
+    // rank_aug: rank of augmented matrix
+    let mut rank_coef = a.nrows();
+    for index in (0..a.nrows()).rev() {
+        if a.row(index).iter().all(|val| abs_diff_eq!(*val, 0.)) {
+            rank_coef -= 1;
+        } else {
+            break;
+        }
+    }
+    let rank_coef = rank_coef;
 
-    for i in (0..a.nrows()).rev() {
+    let mut rank_aug = rank_coef;
+    for index in ((rank_coef - 1)..a.nrows()).rev() {
+        if abs_diff_ne!(b[index], 0.) {
+            rank_aug = index + 1;
+            break;
+        }
+    }
+    let rank_aug = rank_aug;
+
+    for i in (0..rank_coef).rev() {
         b[i] /= &a[[i, i]];
         // a[i] /= a[i][i];
         let a_i_i = a[[i, i]];
@@ -62,7 +83,7 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
             a[[j, i]] = 0.;
         }
     }
-    Ok(b)
+    Ok(b.slice(s![0..rank_coef]).to_owned())
 }
 
 #[cfg(test)]
@@ -94,5 +115,26 @@ mod tests {
         let x = solve(a, b).unwrap();
         println!("{:?}", x);
         assert_abs_diff_eq!(x, array![1., 2., 1.], epsilon = 1e-9);
+    }
+
+    #[test]
+    fn linalg_solve_has_one_answer() {
+        let a = array![
+            [2., 1., -3., -2.],
+            [2., -1., -1., 3.],
+            [1., -1., -2., 2.],
+            [-1., 1., 3., -2.]
+        ];
+        let b = array![-4., 1., -3., 5.];
+        let x = solve(a, b).unwrap();
+        assert_abs_diff_eq!(x, array![1., 2., 2., 1.], epsilon = 1e-9);
+    }
+
+    #[test]
+    fn linalg_solve_has_one_answer2() {
+        let a = array![[2., 1., -3.], [2., -1., -1.], [1., -1., -2.], [-1., 1., 3.]];
+        let b = array![-2., -2., -5., 7.];
+        let x = solve(a, b).unwrap();
+        assert_abs_diff_eq!(x, array![1., 2., 2.], epsilon = 1e-9);
     }
 }
