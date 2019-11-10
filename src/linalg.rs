@@ -177,4 +177,12 @@ mod tests {
         let err = solve(a, b).unwrap_err(); //panic
         assert!(err.kind() == &ErrorKind::LinalgSolveNoSolutions);
     }
+
+    #[test]
+    fn linalg_solve_has_no_solutions_2() {
+        let a = array![[1., 3., -2.], [-1., 2., -3.], [2., -1., 3.],];
+        let b = array![2., -2., 3.];
+        let err = solve(a, b).unwrap_err(); //panic
+        assert!(err.kind() == &ErrorKind::LinalgSolveNoSolutions);
+    }
 }
