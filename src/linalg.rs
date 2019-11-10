@@ -149,15 +149,14 @@ mod tests {
     }
 
     #[test]
-    #[should_panic]
     fn linalg_solve_has_inf_solutions() {
         let a = array![[2., 1., -3., -2.], [2., -1., -1., 3.], [1., -1., -2., 2.]];
         let b = array![4., 1., -3.];
-        solve(a, b).unwrap(); //panic
+        let err = solve(a, b).unwrap_err(); //panic
+        assert!(err.kind() == &ErrorKind::LinalgSolveInfSolutions);
     }
 
     #[test]
-    #[should_panic]
     fn linalg_solve_has_inf_solutions_2() {
         let a = array![
             [2., 1., 3., 4.],
