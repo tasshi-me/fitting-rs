@@ -54,7 +54,10 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
     // rank_aug: rank of augmented matrix
     let mut rank_coef = a.nrows();
     for index in (0..a.nrows()).rev() {
-        if a.row(index).iter().all(|val| abs_diff_eq!(*val, 0.)) {
+        if a.row(index)
+            .iter()
+            .all(|val| abs_diff_eq!(*val, 0.) || val.is_nan())
+        {
             rank_coef -= 1;
         } else {
             break;
@@ -64,7 +67,7 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
 
     let mut rank_aug = rank_coef;
     for index in ((rank_coef - 1)..a.nrows()).rev() {
-        if abs_diff_ne!(b[index], 0.) {
+        if abs_diff_ne!(b[index], 0.) && !b[index].is_nan() {
             rank_aug = index + 1;
             break;
         }
@@ -146,6 +149,19 @@ mod tests {
     fn linalg_solve_has_inf_solutions() {
         let a = array![[2., 1., -3., -2.], [2., -1., -1., 3.], [1., -1., -2., 2.]];
         let b = array![4., 1., -3.];
+        solve(a, b).unwrap(); //panic
+    }
+
+    #[test]
+    #[should_panic]
+    fn linalg_solve_has_inf_solutions_2() {
+        let a = array![
+            [2., 1., 3., 4.],
+            [2., -3., -1., -4.],
+            [1., -2., -1., -3.],
+            [-1., 2., 1., 3.]
+        ];
+        let b = array![2., -6. / 5., -1., 1.];
         solve(a, b).unwrap(); //panic
     }
 }
