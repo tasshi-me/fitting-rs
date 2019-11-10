@@ -7,14 +7,14 @@ pub struct Error {
     inner: Context<ErrorKind>,
 }
 
-#[derive(Fail, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Debug, Fail)]
 pub enum ErrorKind {
     #[fail(display = "None error")]
-    Optional(String),
+    Optional,
     #[fail(display = "Line Algebra error: Equations have infinite solutions")]
     LinalgSolveInfSolutions,
     #[fail(display = "Fitting error")]
-    Fitting(String),
+    Fitting,
 }
 
 impl Fail for Error {

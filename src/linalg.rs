@@ -162,6 +162,7 @@ mod tests {
             [-1., 2., 1., 3.]
         ];
         let b = array![2., -6. / 5., -1., 1.];
-        solve(a, b).unwrap(); //panic
+        let err = solve(a, b).unwrap_err(); //panic
+        assert!(err.kind() == &ErrorKind::LinalgSolveInfSolutions);
     }
 }
