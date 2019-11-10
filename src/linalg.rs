@@ -1,5 +1,6 @@
 use crate::error::Error;
-use ndarray::{Array1, Array2};
+use approx::{abs_diff_eq, abs_diff_ne};
+use ndarray::{s, Array1, Array2, Axis};
 
 /// Solves a system of linear equations.
 ///
@@ -21,6 +22,25 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
     let mut a = a;
     let mut b = b;
     for i in 0..(a.nrows() - 1) {
+        // partial pivoting
+        let (pivot_index, _) = a.column(i).iter().enumerate().skip(i).fold(
+            (i, a[[i, i]]),
+            |(max_index, max), (index, val)| {
+                println!("index: {}", index);
+                if val.abs() > max {
+                    (index, *val)
+                } else {
+                    (max_index, max)
+                }
+            },
+        );
+        if i != pivot_index {
+            let (mut a1, mut a2) = a.view_mut().split_at(Axis(0), pivot_index);
+            ndarray::Zip::from(a1.row_mut(i))
+                .and(a2.row_mut(0))
+                .apply(::std::mem::swap);
+            b.swap(i, pivot_index);
+        }
         for j in i + 1..a.nrows() {
             let coefficient = a[[j, i]] / a[[i, i]];
             // a[j] -= a[i] * coefficient;
@@ -65,5 +85,14 @@ mod tests {
         let b = array![1., -2., 0.];
         let x = solve(a, b).unwrap();
         assert_abs_diff_eq!(x, array![1., -2., -2.], epsilon = 1e-9);
+    }
+
+    #[test]
+    fn linalg_solve_pivoting() {
+        let a = array![[2., 4., -2.], [1., 2., 1.], [1., 3., 2.],];
+        let b = array![8., 6., 9.];
+        let x = solve(a, b).unwrap();
+        println!("{:?}", x);
+        assert_abs_diff_eq!(x, array![1., 2., 1.], epsilon = 1e-9);
     }
 }
