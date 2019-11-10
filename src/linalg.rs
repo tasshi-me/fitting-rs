@@ -128,6 +128,10 @@ mod tests {
     }
 
     #[test]
+    // one solution (4x4)
+    // rank_coef: 4
+    // rank_aug: 4
+    // coef ncols: 4
     fn linalg_solve_has_one_solution() {
         let a = array![
             [2., 1., -3., -2.],
@@ -141,6 +145,10 @@ mod tests {
     }
 
     #[test]
+    // one solution (4x3)
+    // rank_coef: 3
+    // rank_aug: 3
+    // coef ncols: 3
     fn linalg_solve_has_one_solution_2() {
         let a = array![[2., 1., -3.], [2., -1., -1.], [1., -1., -2.], [-1., 1., 3.]];
         let b = array![-2., -2., -5., 7.];
@@ -149,6 +157,9 @@ mod tests {
     }
 
     #[test]
+    // inf solutions (3x4)
+    // rank_coef: 3
+    // coef ncols: 4
     fn linalg_solve_has_inf_solutions() {
         let a = array![[2., 1., -3., -2.], [2., -1., -1., 3.], [1., -1., -2., 2.]];
         let b = array![4., 1., -3.];
@@ -157,6 +168,9 @@ mod tests {
     }
 
     #[test]
+    // inf solutions (4x4)
+    // rank_coef: 2
+    // coef ncols: 4
     fn linalg_solve_has_inf_solutions_2() {
         let a = array![
             [2., 1., 3., 4.],
@@ -170,6 +184,9 @@ mod tests {
     }
 
     #[test]
+    // no solutions (3x2)
+    // rank_coef: 2
+    // rank_aug: 3
     fn linalg_solve_has_no_solutions() {
         let a = array![[-2., 3.], [4., 1.], [1., -3.],];
         let b = array![1., 5., -1.];
@@ -178,6 +195,9 @@ mod tests {
     }
 
     #[test]
+    // no solutions (3x3)
+    // rank_coef: 2
+    // rank_aug: 3
     fn linalg_solve_has_no_solutions_2() {
         let a = array![[1., 3., -2.], [-1., 2., -3.], [2., -1., 3.],];
         let b = array![2., -2., 3.];
