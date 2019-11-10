@@ -26,7 +26,6 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
         let (pivot_index, _) = a.column(i).iter().enumerate().skip(i).fold(
             (i, a[[i, i]]),
             |(max_index, max), (index, val)| {
-                println!("index: {}", index);
                 if val.abs() > max {
                     (index, *val)
                 } else {
@@ -135,7 +134,7 @@ mod tests {
     }
 
     #[test]
-    fn linalg_solve_has_one_solution2() {
+    fn linalg_solve_has_one_solution_2() {
         let a = array![[2., 1., -3.], [2., -1., -1.], [1., -1., -2.], [-1., 1., 3.]];
         let b = array![-2., -2., -5., 7.];
         let x = solve(a, b).unwrap();
