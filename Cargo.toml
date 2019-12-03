@@ -78,3 +78,4 @@ maintenance = { status = "actively-developed" }
 [dependencies]
 ndarray = { version = "0.13.0", features = ["approx"] }
 approx = "0.3.2"
+failure = "0.1.6"

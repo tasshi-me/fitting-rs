@@ -1,3 +1,4 @@
+use crate::error::Error;
 use crate::linalg::solve;
 use ndarray::{array, Array1};
 use std::f64;
@@ -18,7 +19,7 @@ use std::f64;
 /// let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
 /// let x_vec: Array1<f64> = Array::range(1., 10., 1.);
 /// let y_vec: Array1<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
-/// let estimated = fit(x_vec, y_vec);
+/// let estimated = fit(x_vec, y_vec).unwrap();
 /// assert_abs_diff_eq!(
 ///     &array![estimated.0, estimated.1, estimated.2],
 ///     &array![mu, sigma, a],
@@ -28,8 +29,8 @@ use std::f64;
 ///
 /// # References
 /// [1] [E. Pastuchov ́a and M. Z ́akopˇcan, ”Comparison of Algorithms for Fitting a Gaussian Function used in Testing Smart Sensors”, Journal of Electrical Engineering, vol. 66, no. 3, pp. 178-181, 2015.](https://www.researchgate.net/publication/281907940_Comparison_of_Algorithms_For_Fitting_a_Gaussian_Function_Used_in_Testing_Smart_Sensors)
-pub fn fit(x_vec: Array1<f64>, y_vec: Array1<f64>) -> (f64, f64, f64) {
-    guos(x_vec, y_vec)
+pub fn fit(x_vec: Array1<f64>, y_vec: Array1<f64>) -> Result<(f64, f64, f64), Error> {
+    Ok(guos(x_vec, y_vec)?)
 }
 
 /// Returns a value of gaussian function.
@@ -76,7 +77,7 @@ pub fn val(x: f64, mu: f64, sigma: f64, a: f64) -> f64 {
 }
 
 #[allow(dead_code)]
-fn caruanas(x_vec: Array1<f64>, y_vec: Array1<f64>) -> (f64, f64, f64) {
+fn caruanas(x_vec: Array1<f64>, y_vec: Array1<f64>) -> Result<(f64, f64, f64), Error> {
     let len_x_vec = x_vec.len() as f64;
     let sum_x = x_vec.iter().sum();
     let sum_x_pow2 = x_vec.iter().map(|x| x.powi(2)).sum();
@@ -101,17 +102,17 @@ fn caruanas(x_vec: Array1<f64>, y_vec: Array1<f64>) -> (f64, f64, f64) {
         .sum();
     let b = array![sum_log_y, sum_x_log_y, sum_x_pow2_log_y];
 
-    let ans_x = solve(a, b).unwrap();
+    let ans_x = solve(a, b)?;
     let (a, b, c) = (ans_x[0], ans_x[1], ans_x[2]);
 
     let mu = -b / (2. * c);
     let sigma = (-1. / (2. * c)).sqrt();
     let a = (a - (b.powi(2) / (4. * c))).exp();
 
-    (mu, sigma, a)
+    Ok((mu, sigma, a))
 }
 
-fn guos(x_vec: Array1<f64>, y_vec: Array1<f64>) -> (f64, f64, f64) {
+fn guos(x_vec: Array1<f64>, y_vec: Array1<f64>) -> Result<(f64, f64, f64), Error> {
     let sum_y_pow2 = y_vec.iter().map(|y| y.powi(2)).sum();
     let sum_x_y_pow2 = y_vec
         .iter()
@@ -157,14 +158,14 @@ fn guos(x_vec: Array1<f64>, y_vec: Array1<f64>) -> (f64, f64, f64) {
         sum_x_pow2_y_pow2_log_y,
     ];
 
-    let ans_x = solve(a, b).unwrap();
+    let ans_x = solve(a, b)?;
     let (a, b, c) = (ans_x[0], ans_x[1], ans_x[2]);
 
     let mu = -b / (2. * c);
     let sigma = (-1. / (2. * c)).sqrt();
     let a = (a - (b.powi(2) / (4. * c))).exp();
 
-    (mu, sigma, a)
+    Ok((mu, sigma, a))
 }
 
 #[cfg(test)]
@@ -205,7 +206,7 @@ mod tests {
         let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
         let x_vec: Array1<f64> = Array::range(1., 10., 1.);
         let y_vec: Array1<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
-        let estimated = caruanas(x_vec, y_vec);
+        let estimated = caruanas(x_vec, y_vec).unwrap();
         assert_abs_diff_eq!(
             &array![estimated.0, estimated.1, estimated.2],
             &array![mu, sigma, a],
@@ -218,7 +219,7 @@ mod tests {
         let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
         let x_vec: Array1<f64> = Array::range(1., 10., 1.);
         let y_vec: Array1<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
-        let estimated = guos(x_vec, y_vec);
+        let estimated = guos(x_vec, y_vec).unwrap();
         assert_abs_diff_eq!(
             &array![estimated.0, estimated.1, estimated.2],
             &array![mu, sigma, a],
