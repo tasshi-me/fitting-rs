@@ -1,3 +1,5 @@
+pub mod lu;
+
 use crate::error::{Error, ErrorKind};
 use approx::{abs_diff_eq, abs_diff_ne};
 use ndarray::{s, Array1, Array2, Axis};
@@ -18,6 +20,10 @@ use ndarray::{s, Array1, Array2, Axis};
 /// let x = solve(a, b).unwrap();
 /// assert_abs_diff_eq!(x, array![1., -2., -2.], epsilon = 1e-9);
 /// ```
+///
+/// # More About
+/// ## Gaussian Elimination
+///
 pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
     let mut a = a;
     let mut b = b;
