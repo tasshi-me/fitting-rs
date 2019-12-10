@@ -11,6 +11,11 @@ Curve fitting library for Rust
 
 ## Updates
 
+### 0.2.1
+
+- Error handing changed. Some functions returns Result instead of Option.
+- linalg.solve() is improved. Now it can solve NxM array with pivoting.
+
 ### 0.2.0
 
 - Using ndarray instead of nested Vec
