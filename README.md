@@ -8,3 +8,24 @@
 [![codecov](https://codecov.io/gh/mshrtsr/fitting-rs/branch/master/graph/badge.svg)](https://codecov.io/gh/mshrtsr/fitting-rs)
 
 Curve fitting library for Rust
+
+## Updates
+
+### 0.2.1
+
+- Error handing changed. Some functions returns Result instead of Option.
+- linalg.solve() is improved. Now it can solve NxM array with pivoting.
+
+### 0.2.0
+
+- Using ndarray instead of nested Vec
+- Improvement of unit test
+- Add status badges
+
+### 0.1.0
+
+- Implements linalg solve and gaussian fit.
+
+## License
+
+This project is licensed under the MIT license.
