@@ -1,35 +1,29 @@
 [package]
 name = "fitting"
-version = "0.2.1"
+version = "0.3.0"
 authors = ["Masaharu TASHIRO <masatsr.kit@gmail.com>"]
 edition = "2018"
-
 # A short blurb about the package. This is not rendered in any format when
 # uploaded to crates.io (aka this is not markdown).
 description = "Pure Rust curve fitting library"
-
 # These URLs point to more information about the package. These are
 # intended to be webviews of the relevant data, not necessarily compatible
 # with VCS tools and the like.
 documentation = "https://docs.rs/fitting/"
 homepage = "https://crates.io/crates/fitting"
 repository = "https://github.com/mshrtsr/fitting-rs"
-
 # This points to a file under the package root (relative to this `Cargo.toml`).
 # The contents of this file are stored and indexed in the registry.
 # crates.io will render this file and place the result on the crate's page.
 readme = "README.md"
-
 # This is a list of up to five keywords that describe this crate. Keywords
 # are searchable on crates.io, and you may choose any words that would
 # help someone find this crate.
-keywords = ["fitting","statistics","probability","distribution","math"]
-
+keywords = ["fitting", "statistics", "probability", "distribution", "math"]
 # This is a list of up to five categories where this crate would fit.
 # Categories are a fixed list available at crates.io/category_slugs, and
 # they must match exactly.
 categories = ["science"]
-
 # This is an SPDX 2.1 license expression for this package. Currently
 # crates.io will validate the license provided against a whitelist of
 # known license and exception identifiers from the SPDX license list
@@ -39,23 +33,19 @@ categories = ["science"]
 # is deprecated. Instead, use a license expression with AND and OR
 # operators to get more explicit semantics.
 license = "MIT"
-
 # If a package is using a nonstandard license, then this key may be specified in
 # lieu of the above key and must point to a file relative to this manifest
 # (similar to the readme key).
 # license-file = "..."
-
 exclude = ["/.github/*", "./circleci/*", "/.travis.yml"]
 
 [badges]
 circle-ci = { repository = "mshrtsr/fitting-rs", branch = "master" }
 travis-ci = { repository = "mshrtsr/fitting-rs", branch = "master" }
-
 # Codecov: `repository` is required. `branch` is optional; default is `master`
 # `service` is optional; valid values are `github` (default), `bitbucket`, and
 # `gitlab`.
 codecov = { repository = "mshrtsr/fitting-rs", branch = "master", service = "github" }
-
 # Maintenance: `status` is required. Available options are:
 # - `actively-developed`: New features are being added and bugs are being fixed.
 # - `passively-maintained`: There are no plans for new features, but the maintainer intends to
@@ -74,8 +64,7 @@ codecov = { repository = "mshrtsr/fitting-rs", branch = "master", service = "git
 maintenance = { status = "actively-developed" }
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
 ndarray = { version = "0.13.0", features = ["approx"] }
 approx = "0.3.2"
-failure = "0.1.6"
+thiserror = "1.0.17"

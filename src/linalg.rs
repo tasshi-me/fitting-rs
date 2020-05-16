@@ -1,4 +1,4 @@
-use crate::error::{Error, ErrorKind};
+use crate::error::Error;
 use approx::{abs_diff_eq, abs_diff_ne};
 use ndarray::{s, Array1, Array2, Axis};
 
@@ -79,12 +79,12 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
 
     // no solutions
     if rank_coef != rank_aug {
-        return Err(Error::from(ErrorKind::LinalgSolveNoSolutions));
+        return Err(Error::LinalgSolveNoSolutions);
     }
 
     // infinite solutions
     if rank_coef != a.ncols() {
-        return Err(Error::from(ErrorKind::LinalgSolveInfSolutions));
+        return Err(Error::LinalgSolveInfSolutions);
     }
 
     // backward substitution
@@ -170,7 +170,7 @@ mod tests {
         let a = array![[2., 1., -3., -2.], [2., -1., -1., 3.], [1., -1., -2., 2.]];
         let b = array![4., 1., -3.];
         let err = solve(a, b).unwrap_err(); //panic
-        assert!(err.kind() == &ErrorKind::LinalgSolveInfSolutions);
+        assert_eq!(err, Error::LinalgSolveInfSolutions);
     }
 
     #[test]
@@ -186,7 +186,7 @@ mod tests {
         ];
         let b = array![2., -6. / 5., -1., 1.];
         let err = solve(a, b).unwrap_err(); //panic
-        assert!(err.kind() == &ErrorKind::LinalgSolveInfSolutions);
+        assert_eq!(err, Error::LinalgSolveInfSolutions);
     }
 
     #[test]
@@ -197,7 +197,7 @@ mod tests {
         let a = array![[-2., 3.], [4., 1.], [1., -3.],];
         let b = array![1., 5., -1.];
         let err = solve(a, b).unwrap_err(); //panic
-        assert!(err.kind() == &ErrorKind::LinalgSolveNoSolutions);
+        assert_eq!(err, Error::LinalgSolveNoSolutions);
     }
 
     #[test]
@@ -208,6 +208,6 @@ mod tests {
         let a = array![[1., 3., -2.], [-1., 2., -3.], [2., -1., 3.],];
         let b = array![2., -2., 3.];
         let err = solve(a, b).unwrap_err(); //panic
-        assert!(err.kind() == &ErrorKind::LinalgSolveNoSolutions);
+        assert_eq!(err, Error::LinalgSolveNoSolutions);
     }
 }
