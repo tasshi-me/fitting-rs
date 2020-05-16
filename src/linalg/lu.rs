@@ -1,4 +1,4 @@
-use crate::error::{Error, ErrorKind};
+use crate::error::Error;
 use approx::{abs_diff_eq, abs_diff_ne};
 use ndarray::{s, Array1, Array2, Axis};
 
@@ -113,12 +113,12 @@ fn lu_decomposition_right_looking(a: Array2<f64>) -> Result<(Array2<f64>, Array2
 
     // no solutions
     if rank_coef != rank_aug {
-        return Err(Error::from(ErrorKind::LinalgSolveNoSolutions));
+        return Err(Error::LinalgSolveNoSolutions);
     }
 
     // infinite solutions
     if rank_coef != a.ncols() {
-        return Err(Error::from(ErrorKind::LinalgSolveInfSolutions));
+        return Err(Error::LinalgSolveInfSolutions);
     }
 
     // backward substitution
