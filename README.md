@@ -11,6 +11,11 @@ Curve fitting library for Rust
 
 ## Updates
 
+### 0.3.0
+
+- Migrate from the `failure` crate to `thiserror`.
+- Refactor some tests.
+
 ### 0.2.1
 
 - Error handing changed. Some functions returns Result instead of Option.
