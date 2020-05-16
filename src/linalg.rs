@@ -170,7 +170,7 @@ mod tests {
         let a = array![[2., 1., -3., -2.], [2., -1., -1., 3.], [1., -1., -2., 2.]];
         let b = array![4., 1., -3.];
         let err = solve(a, b).unwrap_err(); //panic
-        assert!(err == Error::LinalgSolveInfSolutions);
+        assert_eq!(err, Error::LinalgSolveInfSolutions);
     }
 
     #[test]
@@ -186,7 +186,7 @@ mod tests {
         ];
         let b = array![2., -6. / 5., -1., 1.];
         let err = solve(a, b).unwrap_err(); //panic
-        assert!(err == Error::LinalgSolveInfSolutions);
+        assert_eq!(err, Error::LinalgSolveInfSolutions);
     }
 
     #[test]
@@ -197,7 +197,7 @@ mod tests {
         let a = array![[-2., 3.], [4., 1.], [1., -3.],];
         let b = array![1., 5., -1.];
         let err = solve(a, b).unwrap_err(); //panic
-        assert!(err == Error::LinalgSolveNoSolutions);
+        assert_eq!(err, Error::LinalgSolveNoSolutions);
     }
 
     #[test]
@@ -208,6 +208,6 @@ mod tests {
         let a = array![[1., 3., -2.], [-1., 2., -3.], [2., -1., 3.],];
         let b = array![2., -2., 3.];
         let err = solve(a, b).unwrap_err(); //panic
-        assert!(err == Error::LinalgSolveNoSolutions);
+        assert_eq!(err, Error::LinalgSolveNoSolutions);
     }
 }
