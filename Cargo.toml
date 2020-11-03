@@ -37,7 +37,7 @@ license = "MIT"
 # lieu of the above key and must point to a file relative to this manifest
 # (similar to the readme key).
 # license-file = "..."
-exclude = ["/.github/*", "/scripts"]
+exclude = ["/.github/*", "/scripts", "/python/*"]
 
 [badges]
 circle-ci = { repository = "mshrtsr/fitting-rs", branch = "master" }
