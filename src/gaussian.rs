@@ -12,14 +12,14 @@ use ndarray::{array, Array1};
 /// Estimates the parameters for sample data.
 ///
 /// ```
-/// use approx::assert_abs_diff_eq;
-/// use fitting::gaussian::{fit, val};
-/// use ndarray::{array, Array, Array1};
+/// use fitting::approx::assert_abs_diff_eq;
+/// use fitting::gaussian;
+/// use fitting::ndarray::{array, Array, Array1};
 ///
 /// let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
 /// let x_vec: Array1<f64> = Array::range(1., 10., 1.);
-/// let y_vec: Array1<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
-/// let estimated = fit(x_vec, y_vec).unwrap();
+/// let y_vec: Array1<f64> = x_vec.iter().map(|x| gaussian::val(*x, mu, sigma, a)).collect();
+/// let estimated = gaussian::fit(x_vec, y_vec).unwrap();
 /// assert_abs_diff_eq!(
 ///     &array![estimated.0, estimated.1, estimated.2],
 ///     &array![mu, sigma, a],
@@ -39,11 +39,11 @@ pub fn fit<F: Float>(x_vec: Array1<F>, y_vec: Array1<F>) -> Result<(F, F, F), Er
 /// Returns a value of gaussian function.
 ///
 /// ```
-/// use fitting::gaussian::val;
+/// use fitting::gaussian;
 ///
 /// let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
 /// let x = 5.;
-/// let y = val(x, mu, sigma, a);
+/// let y = gaussian::val(x, mu, sigma, a);
 /// assert_eq!(y, a);
 ///
 /// ```
@@ -52,13 +52,13 @@ pub fn fit<F: Float>(x_vec: Array1<F>, y_vec: Array1<F>) -> Result<(F, F, F), Er
 /// Returns the values of gaussian function.
 ///
 /// ```
-/// use approx::assert_abs_diff_eq;
-/// use fitting::gaussian::val;
-/// use ndarray::{array, Array, Array1};
+/// use fitting::approx::assert_abs_diff_eq;
+/// use fitting::gaussian;
+/// use fitting::ndarray::{array, Array, Array1};
 ///
 /// let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
 /// let x_vec: Array1<f64> = Array::range(1., 10., 1.);
-/// let y_vec: Array1<f64> = x_vec.iter().map(|x| val(*x, mu, sigma, a)).collect();
+/// let y_vec: Array1<f64> = x_vec.iter().map(|x| gaussian::val(*x, mu, sigma, a)).collect();
 /// let expected_ans = array![
 ///     0.41111229050718745,
 ///     0.6065306597126334,

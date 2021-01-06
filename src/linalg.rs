@@ -16,13 +16,13 @@ impl<F: NdFloat + Sum + AbsDiffEq> Float for F {}
 /// Solves `a * x = b`.
 ///
 /// ```
-/// use approx::assert_abs_diff_eq;
-/// use fitting::linalg::solve;
-/// use ndarray::array;
+/// use fitting::approx::assert_abs_diff_eq;
+/// use fitting::linalg;
+/// use fitting::ndarray::array;
 ///
 /// let a = array![[3., 2., -1.], [2., -2., 4.], [-2., 1., -2.]];
 /// let b = array![1., -2., 0.];
-/// let x = solve(a, b).unwrap();
+/// let x = linalg::solve(a, b).unwrap();
 /// assert_abs_diff_eq!(x, array![1., -2., -2.], epsilon = 1e-9);
 /// ```
 pub fn solve<F: Float>(a: Array2<F>, b: Array1<F>) -> Result<Array1<F>, Error> {
