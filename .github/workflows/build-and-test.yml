@@ -25,9 +25,9 @@ jobs:
             ~/.rustup/toolchains
             ~/.rustup/update-hashes
             ~/.rustup/settings.toml
-          key: hogehoge-${{ runner.os }}-build-and-test-${{ env.cache-name }}-${{ matrix.version }}-${{ github.sha }}
+          key: v1-${{ runner.os }}-build-and-test-${{ env.cache-name }}-${{ matrix.version }}-${{ github.sha }}
           restore-keys: |
-            hogehoge-${{ runner.os }}-build-and-test-${{ env.cache-name }}-${{ matrix.version }}-
+            v1-${{ runner.os }}-build-and-test-${{ env.cache-name }}-${{ matrix.version }}-
 
       - name: Switch toolchain version
         run: rustup default ${{ matrix.version }}
@@ -54,11 +54,11 @@ jobs:
             ~/.cargo/env
             ~/.cargo/registry
             target
-          key: hogehoge-${{ runner.os }}-build-and-test-${{ env.cache-name }}-${{ matrix.version }}-${{ github.sha }}
+          key: v1-${{ runner.os }}-build-and-test-${{ env.cache-name }}-${{ matrix.version }}-${{ github.sha }}
           restore-keys: |
-            hogehoge-${{ runner.os }}-build-and-test-${{ env.cache-name }}-${{ matrix.version }}-
+            v1-${{ runner.os }}-build-and-test-${{ env.cache-name }}-${{ matrix.version }}-
 
-      - name: Check cache directories (pre build)
+      - name: Check cached directories (pre build)
         run: |
           ls -la ~/.rustup/toolchains || echo
           ls -la ~/.rustup/update-hashes || echo
@@ -69,21 +69,11 @@ jobs:
           ls -la ~/.cargo/registry || echo
           ls -la target || echo
 
-      - name: Install cargo-update
-        run: |
-          if ! cargo install-update --version > /dev/null;
-          then
-          cargo install cargo-update
-          fi
-
-      - name: Update cargo managed tools
-        run: cargo install-update -a
-
       - name: Install grcov (nightly only)
         if: ${{ matrix.version == 'nightly' }}
         run: |
           rustup component add llvm-tools-preview
-          cargo install-update -i grcov
+          curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-linux-x86_64.tar.bz2 | tar jxf -
 
       - name: Clean
         run: cargo clean
@@ -96,13 +86,13 @@ jobs:
 
       - name: Coverage (nightly only)
         if: ${{ matrix.version == 'nightly' }}
-        run: grcov . --binary-path ./target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "/*" -o lcov.info
+        run: ./grcov . --binary-path ./target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "/*" -o lcov.info
 
       - name: Upload coverage report (nightly only)
         if: ${{ matrix.version == 'nightly' }}
         run: bash <(curl -s https://codecov.io/bash) -f lcov.info
 
-      - name: Check cache directories (post build)
+      - name: Check cached directories (post build)
         run: |
           ls -la ~/.rustup/toolchains || echo
           ls -la ~/.rustup/update-hashes || echo
