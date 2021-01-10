@@ -1,22 +1,20 @@
 language: rust
 
-sudo: required
+os: linux
 
-rust:
-  - stable
-  - beta
-  - nightly
+matrix:
+  include:
+    - rust: stable
+    - rust: beta
+    - rust: nightly
+      env: RUSTFLAGS="-Zinstrument-coverage" LLVM_PROFILE_FILE="mshrtsr-%p-%m.profraw"
 
 cache:
   directories:
     - ${HOME}/.cargo
     - ${HOME}/.rustup
-    - ${HOME}/kcov/
 before_cache:
   - rm -rf /home/travis/.cargo/registry
-
-env:
-  - PATH=$PATH:${HOME}/kcov/bin
 
 jobs:
   allow_failures:
@@ -24,33 +22,19 @@ jobs:
   fast_finish: true
 
 before_install: |
-  if [ ! -d "${HOME}/kcov/bin" ];
-  then 
-  echo "Install kcov" &&
-  wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz &&
-  tar xzf master.tar.gz &&
-  cd kcov-master &&
-  mkdir build &&
-  cd build &&
-  cmake -DCMAKE_INSTALL_PREFIX=${HOME}/kcov .. &&
-  make &&
-  make install &&
-  cd ../.. &&
-  rm -rf kcov-master;
-  fi
-  if ! type cargo-kcov > /dev/null;
+  if ! cargo install-update --version > /dev/null;
   then
-  echo "Install cargo-kcov" &&
-  cargo install cargo-kcov -f;
-  else
-  echo "Check cargo-kcov is latest"
-  REMOTE_KCOV_VERSION=`cargo search cargo-kcov --limit 1 | sed -e 's/^cargo-kcov = "\(.*\)".*/\1/'`
-  LOCAL_KCOV_VERSION=`cargo-kcov --version | sed -e 's/^cargo-kcov \(.*\).*/\1/'`
-  if [ ! $REMOTE_KCOV_VERSION = $LOCAL_KCOV_VERSION ];
-  then
-  echo "Upgrade cargo-kcov" &&
-  cargo install cargo-kcov -f;
+  echo "Install cargo-update"
+  cargo install cargo-update
   fi
+  echo "Upgrade tools"
+  cargo install-update -a
+  if [ $TRAVIS_RUST_VERSION = "nightly" ];
+  then
+  echo "Install llvm-tools-preview"
+  rustup component add llvm-tools-preview
+  echo "Install or update grcov"
+  cargo install-update -i grcov
   fi
 
 before_script: |
@@ -60,20 +44,10 @@ before_script: |
   cargo clippy
   cargo clean
 
-addons:
-  apt:
-    packages:
-      - libcurl4-openssl-dev
-      - libelf-dev
-      - libdw-dev
-      - cmake
-      - gcc
-      - binutils-dev
-      - libiberty-dev
-
 after_success: |
-  cargo kcov --no-clean-rebuild --verbose --all --no-fail-fast \
-  --output ./target/cov -- --verify --include-path=. --exclude-path=./target \
-  --exclude-region=kcov-ignore-begin:kcov-ignore-end --exclude-line=kcov-ignore-line &&
-  bash <(curl -s https://codecov.io/bash) &&
+  if [ $TRAVIS_RUST_VERSION != "nightly" ];
+  then
+  grcov . --binary-path ./target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "/*" -o lcov.info
+  bash <(curl -s https://codecov.io/bash) -f lcov.info
   echo "Uploaded code coverage"
+  fi
