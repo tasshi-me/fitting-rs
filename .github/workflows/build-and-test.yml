@@ -16,14 +16,74 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Cache rustup directory
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-rustup
+        with:
+          path: |
+            ~/.rustup/toolchains
+            ~/.rustup/update-hashes
+            ~/.rustup/settings.toml
+          key: hogehoge-${{ runner.os }}-build-and-test-${{ env.cache-name }}-${{ matrix.version }}-${{ github.sha }}
+          restore-keys: |
+            hogehoge-${{ runner.os }}-build-and-test-${{ env.cache-name }}-${{ matrix.version }}-
+
       - name: Switch toolchain version
         run: rustup default ${{ matrix.version }}
+
+      - name: Set nightly flags (nightly only)
+        if: ${{ matrix.version == 'nightly' }}
+        run: |
+          echo "RUSTFLAGS=-Zinstrument-coverage" >> $GITHUB_ENV
+          echo "LLVM_PROFILE_FILE=mshrtsr-%p-%m.profraw" >> $GITHUB_ENV
 
       - name: Rustup version
         run: rustup --version
 
       - name: Cargo version
         run: cargo --version
+
+      - name: Cache cargo directory
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-cargo
+        with:
+          path: |
+            ~/.cargo/bin
+            ~/.cargo/env
+            ~/.cargo/registry
+            target
+          key: hogehoge-${{ runner.os }}-build-and-test-${{ env.cache-name }}-${{ matrix.version }}-${{ github.sha }}
+          restore-keys: |
+            hogehoge-${{ runner.os }}-build-and-test-${{ env.cache-name }}-${{ matrix.version }}-
+
+      - name: Check cache directories (pre build)
+        run: |
+          ls -la ~/.rustup/toolchains || echo
+          ls -la ~/.rustup/update-hashes || echo
+          ls -la ~/.rustup/settings.toml || echo
+          ls -la ~/.cargo/ || echo
+          ls -la ~/.cargo/bin || echo
+          ls -la ~/.cargo/env || echo
+          ls -la ~/.cargo/registry || echo
+          ls -la target || echo
+
+      - name: Install cargo-update
+        run: |
+          if ! cargo install-update --version > /dev/null;
+          then
+          cargo install cargo-update
+          fi
+
+      - name: Update cargo managed tools
+        run: cargo install-update -a
+
+      - name: Install grcov (nightly only)
+        if: ${{ matrix.version == 'nightly' }}
+        run: |
+          rustup component add llvm-tools-preview
+          cargo install-update -i grcov
 
       - name: Clean
         run: cargo clean
@@ -33,3 +93,22 @@ jobs:
 
       - name: Test
         run: cargo test --verbose
+
+      - name: Coverage (nightly only)
+        if: ${{ matrix.version == 'nightly' }}
+        run: grcov . --binary-path ./target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "/*" -o lcov.info
+
+      - name: Upload coverage report (nightly only)
+        if: ${{ matrix.version == 'nightly' }}
+        run: bash <(curl -s https://codecov.io/bash) -f lcov.info
+
+      - name: Check cache directories (post build)
+        run: |
+          ls -la ~/.rustup/toolchains || echo
+          ls -la ~/.rustup/update-hashes || echo
+          ls -la ~/.rustup/settings.toml || echo
+          ls -la ~/.cargo/ || echo
+          ls -la ~/.cargo/bin || echo
+          ls -la ~/.cargo/env || echo
+          ls -la ~/.cargo/registry || echo
+          ls -la target || echo
