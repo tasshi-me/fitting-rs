@@ -5,9 +5,19 @@ on: [push, pull_request]
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
-    name: Build and Test
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - stable
+          - beta
+          - nightly
+    name: ${{ matrix.version }}
     steps:
       - uses: actions/checkout@v2
+
+      - name: Switch toolchain version
+        run: rustup default ${{ matrix.version }}
 
       - name: Rustup version
         run: rustup --version
