@@ -1,0 +1,33 @@
+name: Format and Lint
+
+on: [push, pull_request]
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Rustup version
+        run: rustup --version
+      - name: Cargo version
+        run: cargo --version
+      - name: Install toolchains
+        run: rustup component add rustfmt
+      - name: Check format
+        run: |
+          cargo fmt --version
+          cargo fmt -- --check
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Rustup version
+        run: rustup --version
+      - name: Cargo version
+        run: cargo --version
+      - name: Install toolchains
+        run: rustup component add clippy
+      - name: Lint
+        run: |
+          cargo clippy --version
+          cargo clippy

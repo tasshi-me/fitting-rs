@@ -1,0 +1,25 @@
+name: Build and Test
+
+on: [push, pull_request]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    name: Build and Test
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Rustup version
+        run: rustup --version
+
+      - name: Cargo version
+        run: cargo --version
+
+      - name: Clean
+        run: cargo clean
+
+      - name: Build
+        run: cargo build --verbose
+
+      - name: Test
+        run: cargo test --verbose
