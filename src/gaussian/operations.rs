@@ -7,6 +7,10 @@ pub fn value<F: Float>(x: F, mu: F, sigma: F, a: F) -> F {
     a * (-(x - mu).powi(2) / (F::from(2).unwrap() * sigma.powi(2))).exp()
 }
 
+pub fn values<F: Float>(x_vec: Array1<F>, mu: F, sigma: F, a: F) -> Array1<F> {
+    x_vec.iter().map(|x| value(*x, mu, sigma, a)).collect()
+}
+
 #[allow(dead_code)]
 pub fn fitting_caruanas<F: Float>(x_vec: Array1<F>, y_vec: Array1<F>) -> Result<(F, F, F), Error> {
     let len_x_vec = F::from(x_vec.len()).ok_or(Error::Optional)?;
@@ -106,7 +110,7 @@ mod tests {
     use ndarray::{array, Array};
 
     #[test]
-    fn gaussian_val() {
+    fn gaussian_value() {
         let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
         let x = 5.;
         let y = value(x, mu, sigma, a);
@@ -114,10 +118,10 @@ mod tests {
     }
 
     #[test]
-    fn gaussian_vals() {
+    fn gaussian_values() {
         let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
         let x_vec: Array1<f64> = Array::range(1., 10., 1.);
-        let y_vec: Array1<f64> = x_vec.iter().map(|x| value(*x, mu, sigma, a)).collect();
+        let y_vec: Array1<f64> = values(x_vec, mu, sigma, a);
         let expected_ans = array![
             0.41111229050718745,
             0.6065306597126334,
@@ -136,7 +140,7 @@ mod tests {
     fn gaussian_fit_caruanas() {
         let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
         let x_vec: Array1<f64> = Array::range(1., 10., 1.);
-        let y_vec: Array1<f64> = x_vec.iter().map(|x| value(*x, mu, sigma, a)).collect();
+        let y_vec: Array1<f64> = values(x_vec.clone(), mu, sigma, a);
         let estimated = fitting_caruanas(x_vec, y_vec).unwrap();
         assert_abs_diff_eq!(
             &array![estimated.0, estimated.1, estimated.2],
@@ -149,7 +153,7 @@ mod tests {
     fn gaussian_fit_guos() {
         let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
         let x_vec: Array1<f64> = Array::range(1., 10., 1.);
-        let y_vec: Array1<f64> = x_vec.iter().map(|x| value(*x, mu, sigma, a)).collect();
+        let y_vec: Array1<f64> = values(x_vec.clone(), mu, sigma, a);
         let estimated = fitting_guos(x_vec, y_vec).unwrap();
         assert_abs_diff_eq!(
             &array![estimated.0, estimated.1, estimated.2],

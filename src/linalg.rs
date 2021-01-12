@@ -2,12 +2,12 @@ use crate::error::Error;
 use approx::{abs_diff_eq, abs_diff_ne};
 use ndarray::{s, Array1, Array2, Axis};
 
-use approx::AbsDiffEq;
+use approx::{AbsDiffEq, RelativeEq, UlpsEq};
 use ndarray::NdFloat;
 use std::iter::Sum;
 
-pub trait Float: NdFloat + Sum + AbsDiffEq {}
-impl<F: NdFloat + Sum + AbsDiffEq> Float for F {}
+pub trait Float: NdFloat + Sum + AbsDiffEq + RelativeEq + UlpsEq {}
+impl<F: NdFloat + Sum + AbsDiffEq + RelativeEq + UlpsEq> Float for F {}
 
 /// Solves a system of linear equations.
 ///
