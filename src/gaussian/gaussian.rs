@@ -163,7 +163,7 @@ impl<F: Float> TryFrom<Array1<F>> for Gaussian<F> {
     type Error = &'static str;
 
     fn try_from(arr: Array1<F>) -> Result<Self, Self::Error> {
-        let error = "The index is out of bounds.";
+        let error = "The index out of bounds.";
         Ok(Gaussian::new(
             *arr.get(0).ok_or(error)?,
             *arr.get(1).ok_or(error)?,
