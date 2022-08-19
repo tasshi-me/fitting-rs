@@ -43,7 +43,7 @@ use ndarray::Array1;
 /// assert_abs_diff_eq!(&y_vec, &expected_ans, epsilon = 1e-9);
 /// ```
 #[deprecated(
-    since = "0.3.0",
+    since = "0.4.0",
     note = "Please use the Gaussian::val function instead"
 )]
 pub fn val<F: Float>(x: F, mu: F, sigma: F, a: F) -> F {
@@ -77,7 +77,7 @@ pub fn val<F: Float>(x: F, mu: F, sigma: F, a: F) -> F {
 /// # References
 /// \[1\] [E. Pastuchov ́a and M. Z ́akopˇcan, ”Comparison of Algorithms for Fitting a Gaussian Function used in Testing Smart Sensors”, Journal of Electrical Engineering, vol. 66, no. 3, pp. 178-181, 2015.](https://www.researchgate.net/publication/281907940_Comparison_of_Algorithms_For_Fitting_a_Gaussian_Function_Used_in_Testing_Smart_Sensors)
 #[deprecated(
-    since = "0.3.0",
+    since = "0.4.0",
     note = "Please use the Gaussian::fit function instead"
 )]
 pub fn fit<F: Float>(x_vec: Array1<F>, y_vec: Array1<F>) -> Result<(F, F, F), Error> {
