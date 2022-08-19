@@ -231,7 +231,7 @@ mod tests {
     use std::convert::TryInto;
 
     #[test]
-    fn constructer() {
+    fn constructor() {
         let (mu, sigma, a): (f64, f64, f64) = (1., 2., 3.);
         let gaussian = Gaussian::new(mu, sigma, a);
         assert_eq!(gaussian.mu, mu);
