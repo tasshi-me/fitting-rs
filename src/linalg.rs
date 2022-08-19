@@ -2,6 +2,13 @@ use crate::error::Error;
 use approx::{abs_diff_eq, abs_diff_ne};
 use ndarray::{s, Array1, Array2, Axis};
 
+use approx::{AbsDiffEq, RelativeEq, UlpsEq};
+use ndarray::NdFloat;
+use std::iter::Sum;
+
+pub trait Float: NdFloat + Sum + AbsDiffEq + RelativeEq + UlpsEq {}
+impl<F: NdFloat + Sum + AbsDiffEq + RelativeEq + UlpsEq> Float for F {}
+
 /// Solves a system of linear equations.
 ///
 /// This function implements the Gaussian elimination.
@@ -9,16 +16,16 @@ use ndarray::{s, Array1, Array2, Axis};
 /// Solves `a * x = b`.
 ///
 /// ```
-/// use approx::assert_abs_diff_eq;
-/// use fitting::linalg::solve;
-/// use ndarray::array;
+/// use fitting::approx::assert_abs_diff_eq;
+/// use fitting::linalg;
+/// use fitting::ndarray::array;
 ///
 /// let a = array![[3., 2., -1.], [2., -2., 4.], [-2., 1., -2.]];
 /// let b = array![1., -2., 0.];
-/// let x = solve(a, b).unwrap();
+/// let x = linalg::solve(a, b).unwrap();
 /// assert_abs_diff_eq!(x, array![1., -2., -2.], epsilon = 1e-9);
 /// ```
-pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
+pub fn solve<F: Float>(a: Array2<F>, b: Array1<F>) -> Result<Array1<F>, Error> {
     let mut a = a;
     let mut b = b;
 
@@ -46,9 +53,10 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
             let coefficient = a[[j, i]] / a[[i, i]];
             // a[j] -= a[i] * coefficient;
             let a_i = a.row(i).to_owned();
+            let b_i = b[i];
             let mut view = a.row_mut(j);
             view -= &(&a_i * coefficient);
-            b[j] -= b[i] * coefficient;
+            b[j] -= b_i * coefficient;
         }
     }
 
@@ -59,7 +67,7 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
     for index in (0..a.nrows()).rev() {
         if a.row(index)
             .iter()
-            .all(|val| abs_diff_eq!(*val, 0.) || val.is_nan())
+            .all(|val| abs_diff_eq!(*val, F::zero()) || val.is_nan())
         {
             rank_coef -= 1;
         } else {
@@ -70,7 +78,7 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
 
     let mut rank_aug = rank_coef;
     for index in ((rank_coef - 1)..a.nrows()).rev() {
-        if abs_diff_ne!(b[index], 0.) && !b[index].is_nan() {
+        if abs_diff_ne!(b[index], F::zero()) && !b[index].is_nan() {
             rank_aug = index + 1;
             break;
         }
@@ -89,14 +97,15 @@ pub fn solve(a: Array2<f64>, b: Array1<f64>) -> Result<Array1<f64>, Error> {
 
     // backward substitution
     for i in (0..rank_coef).rev() {
-        b[i] /= &a[[i, i]];
+        b[i] /= a[[i, i]];
         // a[i] /= a[i][i];
         let a_i_i = a[[i, i]];
         let mut view = a.row_mut(i);
         view /= a_i_i;
         for j in 0..i {
-            b[j] -= b[i] * a[[j, i]];
-            a[[j, i]] = 0.;
+            let b_i = b[i];
+            b[j] -= b_i * a[[j, i]];
+            a[[j, i]] = F::zero();
         }
     }
     Ok(b.slice(s![0..rank_coef]).to_owned())
