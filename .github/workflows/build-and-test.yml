@@ -14,7 +14,7 @@ jobs:
           - nightly
     name: ${{ matrix.version }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Cache rustup directory
         uses: actions/cache@v2
