@@ -1,9 +1,9 @@
-mod depricated;
+mod deprecated;
 mod gaussian;
 mod operations;
 
 #[doc(inline)]
-pub use self::depricated::*;
+pub use self::deprecated::*;
 
 #[doc(inline)]
 pub use self::gaussian::Gaussian;
