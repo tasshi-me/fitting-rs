@@ -140,7 +140,7 @@ impl<F: Float> Gaussian<F> {
     /// ```
     ///
     /// # References
-    /// [1] [E. Pastuchov ́a and M. Z ́akopˇcan, ”Comparison of Algorithms for Fitting a Gaussian Function used in Testing Smart Sensors”, Journal of Electrical Engineering, vol. 66, no. 3, pp. 178-181, 2015.](https://www.researchgate.net/publication/281907940_Comparison_of_Algorithms_For_Fitting_a_Gaussian_Function_Used_in_Testing_Smart_Sensors)
+    /// \[1\] [E. Pastuchov ́a and M. Z ́akopˇcan, ”Comparison of Algorithms for Fitting a Gaussian Function used in Testing Smart Sensors”, Journal of Electrical Engineering, vol. 66, no. 3, pp. 178-181, 2015.](https://www.researchgate.net/publication/281907940_Comparison_of_Algorithms_For_Fitting_a_Gaussian_Function_Used_in_Testing_Smart_Sensors)
     pub fn fit(x_vec: Array1<F>, y_vec: Array1<F>) -> Result<Gaussian<F>, Error> {
         let (mu, sigma, a) = operations::fitting_guos(x_vec, y_vec)?;
         Ok(Gaussian::<F>::new(mu, sigma, a))
