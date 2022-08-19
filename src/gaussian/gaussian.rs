@@ -228,6 +228,8 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
+    use approx::assert_abs_diff_eq;
+    use ndarray::Array;
     use std::convert::TryInto;
 
     #[test]
@@ -259,6 +261,42 @@ mod tests {
         assert_eq!(gaussian.mu, mu);
         assert_eq!(gaussian.sigma, sigma);
         assert_eq!(gaussian.a, a);
+    }
+
+    #[test]
+    fn value() {
+        let gaussian = Gaussian::new(5., 3., 1.);
+        let x = 5.;
+        let y = gaussian.value(x);
+        assert_eq!(&y, gaussian.a());
+    }
+
+    #[test]
+    fn values() {
+        let gaussian = Gaussian::new(5., 3., 1.);
+        let x_vec: Array1<f64> = Array::range(1., 10., 1.);
+        let y_vec: Array1<f64> = gaussian.values(x_vec);
+        let expected_ans = array![
+            0.41111229050718745,
+            0.6065306597126334,
+            0.8007374029168081,
+            0.9459594689067654,
+            1.,
+            0.9459594689067654,
+            0.8007374029168081,
+            0.6065306597126334,
+            0.41111229050718745
+        ];
+        assert_abs_diff_eq!(&y_vec, &expected_ans, epsilon = 1e-9);
+    }
+
+    #[test]
+    fn fit() {
+        let gaussian = Gaussian::new(5., 3., 1.);
+        let x_vec: Array1<f64> = Array::range(1., 10., 1.);
+        let y_vec: Array1<f64> = gaussian.values(x_vec.clone());
+        let estimated = Gaussian::fit(x_vec, y_vec).unwrap();
+        assert_abs_diff_eq!(gaussian, estimated, epsilon = 1e-9);
     }
 
     #[test]
