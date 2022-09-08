@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.4.1](https://github.com/mshrtsr/fitting-rs/compare/0.4.0...0.4.1) (2022-09-08)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate ndarray to 0.15.6 ([#27](https://github.com/mshrtsr/fitting-rs/issues/27)) ([ef30236](https://github.com/mshrtsr/fitting-rs/commit/ef30236fa7a5513b14b5d3ecd49fdca8aae74497))
+* **deps:** update rust crate serde to 1.0.143 ([#31](https://github.com/mshrtsr/fitting-rs/issues/31)) ([4563832](https://github.com/mshrtsr/fitting-rs/commit/45638320e0ab7f6b1f5c0c2b5f021be988c4a5be))
+* **deps:** update rust crate serde to 1.0.144 ([#37](https://github.com/mshrtsr/fitting-rs/issues/37)) ([2655092](https://github.com/mshrtsr/fitting-rs/commit/26550921439f3e189f0ce43767f4444a05f1c6b3))
+* **deps:** update rust crate thiserror to 1.0.32 ([#25](https://github.com/mshrtsr/fitting-rs/issues/25)) ([eac8cbf](https://github.com/mshrtsr/fitting-rs/commit/eac8cbfdc2ab76db77b22ec2f8fa0c9741178956))
+* **deps:** update rust crate thiserror to 1.0.34 ([#36](https://github.com/mshrtsr/fitting-rs/issues/36)) ([6fb6db0](https://github.com/mshrtsr/fitting-rs/commit/6fb6db00be8e56c52226f0c97aa2c796fd06a520))
+
+
+### Chores
+
+* update renovate.json5 ([557c972](https://github.com/mshrtsr/fitting-rs/commit/557c9720ef9b7f40999e6439ac91a65787c88486))
+
 ## [0.4.0](https://github.com/mshrtsr/fitting-rs/compare/0.3.0...0.4.0) (2022-08-19)
 
 
