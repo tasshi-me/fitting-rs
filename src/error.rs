@@ -11,4 +11,6 @@ pub enum Error {
     LinalgSolveInfSolutions,
     #[error("Fitting error")]
     Fitting,
+    #[error("Fitting error: Given y_vec contains a negative value")]
+    FittingGivenYVecContainsNegativeValue,
 }

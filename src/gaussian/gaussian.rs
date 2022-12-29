@@ -300,6 +300,15 @@ mod tests {
     }
 
     #[test]
+    fn fit_with_negative_value() {
+        let x_vec: Array1<f64> = array![1., 2., 3.];
+        let y_vec: Array1<f64> = array![-1., 1., -1.];
+
+        let err = Gaussian::fit(x_vec, y_vec).unwrap_err();
+        assert_eq!(err, Error::FittingGivenYVecContainsNegativeValue);
+    }
+
+    #[test]
     fn as_tuple() {
         let (mu, sigma, a): (f64, f64, f64) = (1., 2., 3.);
         let gaussian = Gaussian { mu, sigma, a };

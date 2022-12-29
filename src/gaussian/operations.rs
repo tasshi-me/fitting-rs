@@ -48,6 +48,10 @@ pub fn fitting_caruanas<F: Float>(x_vec: Array1<F>, y_vec: Array1<F>) -> Result<
 }
 
 pub fn fitting_guos<F: Float>(x_vec: Array1<F>, y_vec: Array1<F>) -> Result<(F, F, F), Error> {
+    // Guo's algorithm doesn't support negative value in y[]
+    if y_vec.iter().any(|y| y.is_sign_negative()) {
+        return Err(Error::FittingGivenYVecContainsNegativeValue);
+    }
     let sum_y_pow2: F = y_vec.iter().map(|y| y.powi(2)).sum();
     let sum_x_y_pow2 = y_vec
         .iter()
@@ -160,5 +164,15 @@ mod tests {
             &array![mu, sigma, a],
             epsilon = 1e-9
         );
+    }
+
+    #[test]
+    fn gaussian_fit_guos_y_vec_contains_negative_value() {
+        let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
+        let x_vec: Array1<f64> = Array::range(1., 10., 1.);
+        let y_vec: Array1<f64> = values(x_vec.clone(), mu, sigma, a).map(|y| y - 0.5);
+
+        let err = fitting_guos(x_vec, y_vec).unwrap_err();
+        assert_eq!(err, Error::FittingGivenYVecContainsNegativeValue);
     }
 }
