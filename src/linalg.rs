@@ -46,7 +46,7 @@ pub fn solve<F: Float>(a: Array2<F>, b: Array1<F>) -> Result<Array1<F>, Error> {
             let (mut a1, mut a2) = a.view_mut().split_at(Axis(0), pivot_index);
             ndarray::Zip::from(a1.row_mut(i))
                 .and(a2.row_mut(0))
-                .apply(::std::mem::swap);
+                .for_each(::std::mem::swap);
             b.swap(i, pivot_index);
         }
         for j in i + 1..a.nrows() {
