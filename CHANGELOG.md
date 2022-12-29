@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.4](https://github.com/mshrtsr/fitting-rs/compare/0.4.3...0.4.4) (2022-12-29)
+
+
+### Chores
+
+* add limitations section of `Gaussian::fit` ([#53](https://github.com/mshrtsr/fitting-rs/issues/53)) ([b556725](https://github.com/mshrtsr/fitting-rs/commit/b556725171b539dcaf2adc61e5cd40b6f5346b0d))
+* replace deprecated method of `ndarray::Zip` ([700fcf5](https://github.com/mshrtsr/fitting-rs/commit/700fcf5570e910d8ee25cf9d272be28dc6afdd72))
+
 ## [0.4.3](https://github.com/mshrtsr/fitting-rs/compare/0.4.2...0.4.3) (2022-12-26)
 
 
