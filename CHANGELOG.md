@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.5.0](https://github.com/mshrtsr/fitting-rs/compare/0.4.4...0.5.0) (2022-12-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* return an error if vec_y contains negative value ([#52](https://github.com/mshrtsr/fitting-rs/issues/52))
+
+### Bug Fixes
+
+* return an error if vec_y contains negative value ([#52](https://github.com/mshrtsr/fitting-rs/issues/52)) ([93b4019](https://github.com/mshrtsr/fitting-rs/commit/93b40195a92af9df5f457bde817ed41a97ae8adf))
+
 ## [0.4.4](https://github.com/mshrtsr/fitting-rs/compare/0.4.3...0.4.4) (2022-12-29)
 
 
