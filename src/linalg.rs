@@ -1,4 +1,3 @@
-use crate::error::Error;
 use approx::{abs_diff_eq, abs_diff_ne};
 use ndarray::{s, Array1, Array2, Axis};
 
@@ -8,6 +7,18 @@ use std::iter::Sum;
 
 pub trait Float: NdFloat + Sum + AbsDiffEq + RelativeEq + UlpsEq {}
 impl<F: NdFloat + Sum + AbsDiffEq + RelativeEq + UlpsEq> Float for F {}
+
+use thiserror::Error;
+
+#[derive(Error, Debug, Eq, PartialEq)]
+pub enum LinalgError {
+    /// Equations have no solutions
+    #[error("Equations have no solutions")]
+    EquationsHaveNoSolutions,
+    /// Equations have infinite solutions
+    #[error("Equations have infinite solutions")]
+    EquationsHaveInfSolutions,
+}
 
 /// Solves a system of linear equations.
 ///
@@ -25,7 +36,7 @@ impl<F: NdFloat + Sum + AbsDiffEq + RelativeEq + UlpsEq> Float for F {}
 /// let x = linalg::solve(a, b).unwrap();
 /// assert_abs_diff_eq!(x, array![1., -2., -2.], epsilon = 1e-9);
 /// ```
-pub fn solve<F: Float>(a: Array2<F>, b: Array1<F>) -> Result<Array1<F>, Error> {
+pub fn solve<F: Float>(a: Array2<F>, b: Array1<F>) -> Result<Array1<F>, LinalgError> {
     let mut a = a;
     let mut b = b;
 
@@ -87,12 +98,12 @@ pub fn solve<F: Float>(a: Array2<F>, b: Array1<F>) -> Result<Array1<F>, Error> {
 
     // no solutions
     if rank_coef != rank_aug {
-        return Err(Error::LinalgSolveNoSolutions);
+        return Err(LinalgError::EquationsHaveNoSolutions);
     }
 
     // infinite solutions
     if rank_coef != a.ncols() {
-        return Err(Error::LinalgSolveInfSolutions);
+        return Err(LinalgError::EquationsHaveInfSolutions);
     }
 
     // backward substitution
@@ -179,7 +190,7 @@ mod tests {
         let a = array![[2., 1., -3., -2.], [2., -1., -1., 3.], [1., -1., -2., 2.]];
         let b = array![4., 1., -3.];
         let err = solve(a, b).unwrap_err(); //panic
-        assert_eq!(err, Error::LinalgSolveInfSolutions);
+        assert_eq!(err, LinalgError::EquationsHaveInfSolutions);
     }
 
     #[test]
@@ -195,7 +206,7 @@ mod tests {
         ];
         let b = array![2., -6. / 5., -1., 1.];
         let err = solve(a, b).unwrap_err(); //panic
-        assert_eq!(err, Error::LinalgSolveInfSolutions);
+        assert_eq!(err, LinalgError::EquationsHaveInfSolutions);
     }
 
     #[test]
@@ -206,7 +217,7 @@ mod tests {
         let a = array![[-2., 3.], [4., 1.], [1., -3.],];
         let b = array![1., 5., -1.];
         let err = solve(a, b).unwrap_err(); //panic
-        assert_eq!(err, Error::LinalgSolveNoSolutions);
+        assert_eq!(err, LinalgError::EquationsHaveNoSolutions);
     }
 
     #[test]
@@ -217,6 +228,6 @@ mod tests {
         let a = array![[1., 3., -2.], [-1., 2., -3.], [2., -1., 3.],];
         let b = array![2., -2., 3.];
         let err = solve(a, b).unwrap_err(); //panic
-        assert_eq!(err, Error::LinalgSolveNoSolutions);
+        assert_eq!(err, LinalgError::EquationsHaveNoSolutions);
     }
 }
