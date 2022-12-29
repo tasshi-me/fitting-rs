@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.3](https://github.com/mshrtsr/fitting-rs/compare/0.4.2...0.4.3) (2022-12-26)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate serde to 1.0.148 ([#45](https://github.com/mshrtsr/fitting-rs/issues/45)) ([2f8a832](https://github.com/mshrtsr/fitting-rs/commit/2f8a8320d0f940984d65b6fe4da24433cba698eb))
+* **deps:** update rust crate serde to 1.0.149 ([#47](https://github.com/mshrtsr/fitting-rs/issues/47)) ([317a8a5](https://github.com/mshrtsr/fitting-rs/commit/317a8a588babf0959be692384c3219821cbe2433))
+* **deps:** update rust crate serde to 1.0.150 ([#48](https://github.com/mshrtsr/fitting-rs/issues/48)) ([ab34e27](https://github.com/mshrtsr/fitting-rs/commit/ab34e2758d619c9f6dd6c946f14474df8b780408))
+* **deps:** update rust crate serde to 1.0.151 ([#49](https://github.com/mshrtsr/fitting-rs/issues/49)) ([f721ee0](https://github.com/mshrtsr/fitting-rs/commit/f721ee0329342f69ccd5ef1d58cba13e584171e0))
+* **deps:** update rust crate serde to 1.0.152 ([#51](https://github.com/mshrtsr/fitting-rs/issues/51)) ([b52b737](https://github.com/mshrtsr/fitting-rs/commit/b52b73752adeb372654adeeed356a33633e381d9))
+* **deps:** update rust crate thiserror to 1.0.38 ([#50](https://github.com/mshrtsr/fitting-rs/issues/50)) ([406f4ba](https://github.com/mshrtsr/fitting-rs/commit/406f4ba0b74165daa0ed7430f47861c8f3f0e81f))
+
 ## [0.4.2](https://github.com/mshrtsr/fitting-rs/compare/0.4.1...0.4.2) (2022-10-21)
 
 
