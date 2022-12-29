@@ -1,7 +1,6 @@
 use std::convert::TryFrom;
 
-use crate::error::Error;
-use crate::gaussian::operations;
+use crate::gaussian::{operations, GaussianError};
 use crate::linalg::Float;
 use approx::{AbsDiffEq, RelativeEq, UlpsEq};
 use ndarray::{array, Array1};
@@ -149,7 +148,7 @@ impl<F: Float> Gaussian<F> {
     ///
     /// # References
     /// \[1\] [E. Pastuchov ́a and M. Z ́akopˇcan, ”Comparison of Algorithms for Fitting a Gaussian Function used in Testing Smart Sensors”, Journal of Electrical Engineering, vol. 66, no. 3, pp. 178-181, 2015.](https://www.researchgate.net/publication/281907940_Comparison_of_Algorithms_For_Fitting_a_Gaussian_Function_Used_in_Testing_Smart_Sensors)
-    pub fn fit(x_vec: Array1<F>, y_vec: Array1<F>) -> Result<Gaussian<F>, Error> {
+    pub fn fit(x_vec: Array1<F>, y_vec: Array1<F>) -> Result<Gaussian<F>, GaussianError> {
         let (mu, sigma, a) = operations::fitting_guos(x_vec, y_vec)?;
         Ok(Gaussian::<F>::new(mu, sigma, a))
     }
@@ -305,6 +304,15 @@ mod tests {
         let y_vec: Array1<f64> = gaussian.values(x_vec.clone());
         let estimated = Gaussian::fit(x_vec, y_vec).unwrap();
         assert_abs_diff_eq!(gaussian, estimated, epsilon = 1e-9);
+    }
+
+    #[test]
+    fn fit_with_negative_value() {
+        let x_vec: Array1<f64> = array![1., 2., 3.];
+        let y_vec: Array1<f64> = array![-1., 1., -1.];
+
+        let err = Gaussian::fit(x_vec, y_vec).unwrap_err();
+        assert_eq!(err, GaussianError::GivenYVecContainsNegativeValue);
     }
 
     #[test]

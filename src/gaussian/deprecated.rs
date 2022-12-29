@@ -1,5 +1,5 @@
-use crate::error::Error;
 use crate::gaussian::operations;
+use crate::gaussian::GaussianError;
 use crate::linalg::Float;
 use ndarray::Array1;
 
@@ -80,6 +80,6 @@ pub fn val<F: Float>(x: F, mu: F, sigma: F, a: F) -> F {
     since = "0.4.0",
     note = "Please use the Gaussian::fit function instead"
 )]
-pub fn fit<F: Float>(x_vec: Array1<F>, y_vec: Array1<F>) -> Result<(F, F, F), Error> {
+pub fn fit<F: Float>(x_vec: Array1<F>, y_vec: Array1<F>) -> Result<(F, F, F), GaussianError> {
     operations::fitting_guos(x_vec, y_vec)
 }

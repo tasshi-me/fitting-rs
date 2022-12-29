@@ -1,4 +1,4 @@
-use crate::error::Error;
+use crate::gaussian::GaussianError;
 use crate::linalg;
 use crate::linalg::Float;
 use ndarray::{array, Array1};
@@ -12,8 +12,11 @@ pub fn values<F: Float>(x_vec: Array1<F>, mu: F, sigma: F, a: F) -> Array1<F> {
 }
 
 #[allow(dead_code)]
-pub fn fitting_caruanas<F: Float>(x_vec: Array1<F>, y_vec: Array1<F>) -> Result<(F, F, F), Error> {
-    let len_x_vec = F::from(x_vec.len()).ok_or(Error::Optional)?;
+pub fn fitting_caruanas<F: Float>(
+    x_vec: Array1<F>,
+    y_vec: Array1<F>,
+) -> Result<(F, F, F), GaussianError> {
+    let len_x_vec = F::from(x_vec.len()).ok_or(GaussianError::GivenXVecHasNoElement)?;
     let sum_x = x_vec.sum();
     let sum_x_pow2 = x_vec.iter().map(|x| x.powi(2)).sum();
     let sum_x_pow3 = x_vec.iter().map(|x| x.powi(3)).sum();
@@ -47,7 +50,14 @@ pub fn fitting_caruanas<F: Float>(x_vec: Array1<F>, y_vec: Array1<F>) -> Result<
     Ok((mu, sigma, a))
 }
 
-pub fn fitting_guos<F: Float>(x_vec: Array1<F>, y_vec: Array1<F>) -> Result<(F, F, F), Error> {
+pub fn fitting_guos<F: Float>(
+    x_vec: Array1<F>,
+    y_vec: Array1<F>,
+) -> Result<(F, F, F), GaussianError> {
+    // Guo's algorithm doesn't support negative value in y[]
+    if y_vec.iter().any(|y| y.is_sign_negative()) {
+        return Err(GaussianError::GivenYVecContainsNegativeValue);
+    }
     let sum_y_pow2: F = y_vec.iter().map(|y| y.powi(2)).sum();
     let sum_x_y_pow2 = y_vec
         .iter()
@@ -160,5 +170,15 @@ mod tests {
             &array![mu, sigma, a],
             epsilon = 1e-9
         );
+    }
+
+    #[test]
+    fn gaussian_fit_guos_y_vec_contains_negative_value() {
+        let (mu, sigma, a): (f64, f64, f64) = (5., 3., 1.);
+        let x_vec: Array1<f64> = Array::range(1., 10., 1.);
+        let y_vec: Array1<f64> = values(x_vec.clone(), mu, sigma, a).map(|y| y - 0.5);
+
+        let err = fitting_guos(x_vec, y_vec).unwrap_err();
+        assert_eq!(err, GaussianError::GivenYVecContainsNegativeValue);
     }
 }
