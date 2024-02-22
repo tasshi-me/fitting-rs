@@ -36,7 +36,7 @@ jobs:
         if: ${{ matrix.version == 'nightly' }}
         run: |
           echo "RUSTFLAGS=-Zinstrument-coverage" >> $GITHUB_ENV
-          echo "LLVM_PROFILE_FILE=mshrtsr-%p-%m.profraw" >> $GITHUB_ENV
+          echo "LLVM_PROFILE_FILE=tasshi-me-%p-%m.profraw" >> $GITHUB_ENV
 
       - name: Rustup version
         run: rustup --version

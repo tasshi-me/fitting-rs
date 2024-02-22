@@ -1,3 +1,3 @@
 {
-  "extends": ["github>mshrtsr/renovate-config"]
+  "extends": ["github>tasshi-me/renovate-config"]
 }

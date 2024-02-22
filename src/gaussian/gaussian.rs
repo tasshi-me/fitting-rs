@@ -144,7 +144,7 @@ impl<F: Float> Gaussian<F> {
     /// - All elements of `y_vec` must be positive numbers
     /// - If the distribution is "long-tailed", it affects the fitting accuracy.
     ///   - A detailed description can be found in Reference 1.
-    ///   - Also, you can see the reproduction and workaround in [GitHub](https://github.com/mshrtsr/fitting-rs/issues/6#issuecomment-1367095969).
+    ///   - Also, you can see the reproduction and workaround in [GitHub](https://github.com/tasshi-me/fitting-rs/issues/6#issuecomment-1367095969).
     ///
     /// # References
     /// \[1\] [E. Pastuchov ́a and M. Z ́akopˇcan, ”Comparison of Algorithms for Fitting a Gaussian Function used in Testing Smart Sensors”, Journal of Electrical Engineering, vol. 66, no. 3, pp. 178-181, 2015.](https://www.researchgate.net/publication/281907940_Comparison_of_Algorithms_For_Fitting_a_Gaussian_Function_Used_in_Testing_Smart_Sensors)

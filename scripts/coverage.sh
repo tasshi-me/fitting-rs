@@ -4,7 +4,7 @@ export RUSTFLAGS="-Zinstrument-coverage"
 export TARGET_BINARY_DIR="target/debug"
 export COVERAGE_HTML_DIR=${TARGET_BINARY_DIR}"/coverage"
 export LLVM_PROFILE_DIR=${COVERAGE_HTML_DIR}"/profraw"
-export LLVM_PROFILE_FILE=${LLVM_PROFILE_DIR}"/mshrtsr-%p-%m.profraw"
+export LLVM_PROFILE_FILE=${LLVM_PROFILE_DIR}"/tasshi-me-%p-%m.profraw"
 export LLVM_PROFDATA_FILE=${LLVM_PROFILE_DIR}"/merged.profdata"
 
 export TARGET_BINARY_FILE=${TARGET_BINARY_DIR}"/fitting"
