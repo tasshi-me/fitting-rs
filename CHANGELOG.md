@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/tasshi-me/fitting-rs/compare/0.5.1...0.5.2) (2024-03-12)
+
+
+### Chores
+
+* **deps:** update rust crate thiserror to 1.0.58 ([#96](https://github.com/tasshi-me/fitting-rs/issues/96)) ([8f4d4c9](https://github.com/tasshi-me/fitting-rs/commit/8f4d4c9c7e33835bbb605cacbc3a6257e28315b7))
+
 ## [0.5.1](https://github.com/tasshi-me/fitting-rs/compare/0.5.0...0.5.1) (2024-02-26)
 
 
