@@ -67,5 +67,5 @@ maintenance = { status = "actively-developed" }
 [dependencies]
 ndarray = { version = "0.15.6", features = ["serde", "approx", "approx-0_5"] }
 approx = "0.5.1"
-thiserror = "1.0.60"
+thiserror = "1.0.61"
 serde = { version = "1.0.202", features = ["derive"] }
