@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.5.2](https://github.com/tasshi-me/fitting-rs/compare/0.5.1...0.5.2) (2024-09-22)
+
+
+### Chores
+
+* **deps:** update rust crate serde to 1.0.198 ([#98](https://github.com/tasshi-me/fitting-rs/issues/98)) ([925e3cc](https://github.com/tasshi-me/fitting-rs/commit/925e3ccd490a62769687fd90454c5582407830f6))
+* **deps:** update rust crate serde to 1.0.199 ([#100](https://github.com/tasshi-me/fitting-rs/issues/100)) ([ccf8cb4](https://github.com/tasshi-me/fitting-rs/commit/ccf8cb457b5f7acabc39b9115e2d410eb27b39ec))
+* **deps:** update rust crate serde to 1.0.200 ([#101](https://github.com/tasshi-me/fitting-rs/issues/101)) ([cadd933](https://github.com/tasshi-me/fitting-rs/commit/cadd933211eb35d7d49ed3ce69b13f02b065cba5))
+* **deps:** update rust crate serde to 1.0.201 ([#103](https://github.com/tasshi-me/fitting-rs/issues/103)) ([ba3874f](https://github.com/tasshi-me/fitting-rs/commit/ba3874f1703898fe9651c1763bbc851a4e6ca953))
+* **deps:** update rust crate serde to 1.0.202 ([#104](https://github.com/tasshi-me/fitting-rs/issues/104)) ([9efc2a5](https://github.com/tasshi-me/fitting-rs/commit/9efc2a56f88e3a2d2122898dce7b814f9a55f186))
+* **deps:** update rust crate serde to 1.0.203 ([#106](https://github.com/tasshi-me/fitting-rs/issues/106)) ([2ac427e](https://github.com/tasshi-me/fitting-rs/commit/2ac427e535b00f8554fce477e96329765802bd69))
+* **deps:** update rust crate serde to 1.0.204 ([#107](https://github.com/tasshi-me/fitting-rs/issues/107)) ([86517bd](https://github.com/tasshi-me/fitting-rs/commit/86517bdf442342176f9009f52a187c65d58a9c29))
+* **deps:** update rust crate serde to 1.0.205 ([#111](https://github.com/tasshi-me/fitting-rs/issues/111)) ([0c0e20c](https://github.com/tasshi-me/fitting-rs/commit/0c0e20cf46c7e8b55d78860ad0e63432bb89537c))
+* **deps:** update rust crate serde to 1.0.206 ([#112](https://github.com/tasshi-me/fitting-rs/issues/112)) ([a725ba6](https://github.com/tasshi-me/fitting-rs/commit/a725ba660dffac4ff9db45bc5d0bb2de5fe0becb))
+* **deps:** update rust crate serde to 1.0.207 ([#113](https://github.com/tasshi-me/fitting-rs/issues/113)) ([6990904](https://github.com/tasshi-me/fitting-rs/commit/69909049c562e716e61c469d44fa7c63e4d4bf9e))
+* **deps:** update rust crate serde to 1.0.208 ([#114](https://github.com/tasshi-me/fitting-rs/issues/114)) ([5deb88c](https://github.com/tasshi-me/fitting-rs/commit/5deb88c30baf4d0244b704d83343ee6eb3b0d5dd))
+* **deps:** update rust crate serde to 1.0.209 ([#115](https://github.com/tasshi-me/fitting-rs/issues/115)) ([64acebc](https://github.com/tasshi-me/fitting-rs/commit/64acebcd5590f14f7e6e1c730ef78a18b1c7efea))
+* **deps:** update rust crate serde to 1.0.210 ([#116](https://github.com/tasshi-me/fitting-rs/issues/116)) ([6db9000](https://github.com/tasshi-me/fitting-rs/commit/6db90008df542c36a6e15d09b73b7ff417e7a423))
+* **deps:** update rust crate thiserror to 1.0.58 ([#96](https://github.com/tasshi-me/fitting-rs/issues/96)) ([8f4d4c9](https://github.com/tasshi-me/fitting-rs/commit/8f4d4c9c7e33835bbb605cacbc3a6257e28315b7))
+* **deps:** update rust crate thiserror to 1.0.59 ([#99](https://github.com/tasshi-me/fitting-rs/issues/99)) ([0ad77cd](https://github.com/tasshi-me/fitting-rs/commit/0ad77cd886ef9653db41fb3e6e9130cc3350acab))
+* **deps:** update rust crate thiserror to 1.0.60 ([#102](https://github.com/tasshi-me/fitting-rs/issues/102)) ([00f1e08](https://github.com/tasshi-me/fitting-rs/commit/00f1e086d9cf238a432c9d130e8c92fb26395fe6))
+* **deps:** update rust crate thiserror to 1.0.61 ([#105](https://github.com/tasshi-me/fitting-rs/issues/105)) ([f68045f](https://github.com/tasshi-me/fitting-rs/commit/f68045f0efc023a221b0453286739ba68b37f7c9))
+* **deps:** update rust crate thiserror to 1.0.62 ([#108](https://github.com/tasshi-me/fitting-rs/issues/108)) ([ade2b24](https://github.com/tasshi-me/fitting-rs/commit/ade2b24fd9c9e4fd029c094b463ccade3aa0b30a))
+* **deps:** update rust crate thiserror to 1.0.63 ([#109](https://github.com/tasshi-me/fitting-rs/issues/109)) ([f5016c7](https://github.com/tasshi-me/fitting-rs/commit/f5016c7be891452e6010199fc806fab7f7936a20))
+* **deps:** update rust crate thiserror to 1.0.64 ([#117](https://github.com/tasshi-me/fitting-rs/issues/117)) ([408cc8c](https://github.com/tasshi-me/fitting-rs/commit/408cc8ce1f7ed877a6d1ccf501f679f3bd7df25b))
+
 ## [0.5.1](https://github.com/tasshi-me/fitting-rs/compare/0.5.0...0.5.1) (2024-02-26)
 
 
