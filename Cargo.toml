@@ -1,6 +1,6 @@
 [package]
 name = "fitting"
-version = "0.5.1"
+version = "0.5.2"
 authors = ["Masaharu TASHIRO <masatsr.kit@gmail.com>"]
 edition = "2018"
 # A short blurb about the package. This is not rendered in any format when
